@@ -1,0 +1,82 @@
+<?php
+/**
+ * Post class file.
+ *
+ * @author Chris Smith <dmagick@gmail.com>
+ * @version 1.0
+ * @package cms
+ */
+
+/**
+ * The post class.
+ *
+ * @package cms
+ */
+class post 
+{
+
+    /**
+     * Get the latest posts from the database.
+     *
+     * @param integer $limit The number of posts to get. Defaults to 10.
+     *
+     * @return array Returns an array of the last number of posts.
+     */
+    public static function getPosts($limit=10)
+    {
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username";
+        $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
+        $sql .= " ON (p.postby=u.userid)";
+        $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
+
+        $query   = db::select($sql);
+        $results = db::fetch($query);
+
+        return $results;
+    }
+
+    /**
+     * Get post content based on the date and subject passed in.
+     *
+     * This will be used if we are displaying a particular blog post.
+     * We need both the date and the subject in case there are multiple
+     * posts per day.
+     *
+     * @param string $postdate    The date to get the post for.
+     * @param string $postsubject The subject to get the post for.
+     *
+     * @return array
+     */
+    public static function getPostByDate($postdate, $postsubject)
+    {
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username";
+        $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
+        $sql .= " ON (p.postby=u.userid)";
+        $sql .= " WHERE DATE(p.postdate) = :postdate AND p.subject=:postsubject";
+
+        $query  = db::select($sql, array($postdate, urldecode($postsubject)));
+        $result = db::fetch($query);
+
+        return $result;
+    }
+
+    /**
+     * Return a safe url based on the post date and subject.
+     *
+     * @param string $postdate    The date of the post.
+     * @param string $postsubject The subject of the post.
+     *
+     * @return string
+     */
+    public static function safeUrl($postdate, $postsubject)
+    {
+        if (is_numeric($postdate) === FALSE) {
+            $postdate = strtotime($postdate);
+        }
+        $url = date('Y-m-d', $postdate).'/'.urlencode($postsubject);
+        return $url;
+    }
+
+}
+
+/* vim: set expandtab ts=4 sw=4: */

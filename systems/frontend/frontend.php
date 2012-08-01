@@ -42,19 +42,6 @@ class frontend
             $page = trim($_SERVER['PATH_INFO'], '/');
         }
 
-        if (session::has('user') === FALSE) {
-            if (session::has('viewPage') === FALSE) {
-                session::set('viewPage', $page);
-            }
-            user::process();
-            return;
-        }
-
-        if (session::has('viewPage') === TRUE) {
-            $page = session::get('viewPage');
-            session::remove('viewPage');
-        }
-
         if (empty($page) === FALSE) {
             $info = trim($page, '/');
             $bits = explode('/', $info);
@@ -74,21 +61,15 @@ class frontend
         } else {
             template::serveTemplate('header');
             template::display();
+            $posts = Post::getPosts(1);
+            if (empty($posts) === TRUE) {
+                template::serveTemplate('post.empty');
+                template::display();
+            }
         }
 
         template::serveTemplate('footer');
         template::display();
-    }
-
-    public static function process($action=NULL)
-    {
-        switch ($action) {
-            case 'graph':
-                self::showGraph();
-            break;
-            default:
-                exit;
-        }
     }
 }
 

@@ -32,10 +32,11 @@ require $basedir.'/config/config.php';
 $systems = array(
 	'db',
 	'frontend',
+    'messagelog',
+    'post',
+    'session',
 	'template',
 	'url',
-    'session',
-    'messagelog',
     'user',
 );
 
@@ -68,16 +69,21 @@ foreach ($systems as $system) {
 	require $basedir.'/systems/'.$system.'/'.$system.'.php';
 }
 
-session::setDir($config['cachedir']);
-session::start();
-
-messagelog::setLog($config['cachedir'].'/debug.log');
-
+template::setDir($basedir.'/templates');
 url::setUrl($config['url']);
 
-template::setDir($basedir.'/templates');
+try {
+    session::setDir($config['cachedir']);
+    messagelog::setLog($config['cachedir'].'/debug.log');
+} catch (Exception $e) {
+    error_log('Unable to set session dir or message log:'.$e->getMessage());
+    template::serveTemplate('error.technical');
+    template::display();
+    exit;
+}
 
 try {
+    session::start();
     db::connect($config['db']);
 } catch (Exception $e) {
     messagelog::enable();
