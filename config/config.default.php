@@ -10,7 +10,7 @@ $config = array(
     ),
     'cachedir' => dirname(__FILE__).'/../cache',
     'logfile'  => dirname(__FILE__).'/../cache/log',
-    'url'      => '',
+    'url'      => 'http://',
 );
 
 /* vim: set expandtab ts=4 sw=4: */
