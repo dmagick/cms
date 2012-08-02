@@ -68,6 +68,13 @@ body {
     clear: both;
 }
 
+.postby {
+    font-size: 12px;
+    margin-right: 10px;
+    width: 100%;
+    text-align: right;
+}
+
 .flash-message-success {
     padding: 2px;
     border: 1px solid #e5e5e5;
