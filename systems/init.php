@@ -34,13 +34,14 @@ if (function_exists('date_default_timezone_set') === TRUE) {
  * @see isValidSystem
  */
 $systems = array(
-	'db',
-	'frontend',
+    'contact',
+    'db',
+    'frontend',
     'messagelog',
     'post',
     'session',
-	'template',
-	'url',
+    'template',
+    'url',
     'user',
 );
 
@@ -70,7 +71,7 @@ function isValidSystem($systemName=NULL)
  * we can just loop over 'em to do it all in one go.
  */
 foreach ($systems as $system) {
-	require $basedir.'/systems/'.$system.'/'.$system.'.php';
+    require $basedir.'/systems/'.$system.'/'.$system.'.php';
 }
 
 template::setDir($basedir.'/templates');
