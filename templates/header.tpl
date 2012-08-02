@@ -6,11 +6,15 @@
     <script type="text/javascript" src="~url::baseurl~/web/js/jquery-1.5.min.js"></script>
     </head>
     <body>
-        <div id="header-wrapper">
-            <span class="header-link" id="header">
-                <a href="~url::baseurl~/">Home</a>&nbsp;|&nbsp;
-            </span>
+        <div id="logo">
+            <img src="~url::baseurl~/web/images/logo.jpg" />
         </div>
-        <div class="wrapper">
-            <div class="content">
+        <div id="menu">
+            <ul>
+                <li class="here">Home</li>
+                <li>About</li>
+                <li>Contact</li>
+            </ul>
+        </div>
+        <div id="content" class="round">
 

@@ -6,9 +6,8 @@
     <script type="text/javascript" src="~url::baseurl~/web/js/jquery-1.5.min.js"></script>
     </head>
     <body>
-        <div class="header-link" id="header">
-            &nbsp;
+        <div id="logo">
+            <img src="~url::baseurl~/web/images/logo.jpg" />
         </div>
-        <div class="wrapper">
-            <div class="content">
+        <div id="content" class="round">
 

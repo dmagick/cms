@@ -1,123 +1,71 @@
 body {
-    font-family: Helvetica,Arial,sans-serif;
-    background-color: #E6E6E6;
-    font-size: 14px;
-}
-
-ul {
+    font-family: arial;
+    font-size: 18px;
+    background: #fff;
+    color: #292727;
     margin: 0px;
 }
 
-ul {
-	list-style: none;
-}
-
-ul li:before {
-    content: "\00BB \0020";
-}
-
-.header-link A {
-    color: #6A6A6A;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.header-link A:hover {
-    color: #969696;
-    text-transform: uppercase;
-}
-
-.wrapper {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 10%;
-    width: 80%;
-    border: 1px solid #5D5D5D;
-    background-color: #FFFFFF;
-    padding-bottom: 10px;
-    min-height: 750px;
-}
-
-.content {
-    width: 90%;
-    margin-left: 5%;
-}
-
-.middle {
-    margin-left: 30%;
-    margin-top: 25%;
-    padding: 10px;
-    width: 40%;
-}
-
-#header-wrapper {
-    padding: 1px;
-}
-
-#header {
-    margin-top: 10px;
-    margin-left: 10%;
-    text-align: left;
-    font-size: 10px;
-    margin-right: 200px;
-    float: left;
-}
-
-#header-right {
-    margin-top: 10px;
-    margin-right: 10%;
-    margin-left: 10%;
-    text-align: left;
-    font-size: 10px;
-    float: right;
-}
-
-#account-header {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.account-header-link A {
-    color: #6A6A6A;
-    text-decoration: none;
-}
-
-.account-header-link A:hover {
-    color: #969696;
-}
-
-.account-field {
-    width: 120px;
-    float: left;
+#menu {
     margin: 5px;
+    text-align: center;
+    font-variant: small-caps;
 }
 
-.account-value {
-    width: 600px;
+#menu ul {
+    margin-left: 0;
+    padding-left: 0;
+    display: inline;
+} 
+
+#menu ul li {
+    margin-left: 20px;
+    margin-bottom: 0;
+    padding: 2px 15px 5px;
+    list-style: none;
+    display: inline;
+}
+
+#menu ul li.here {
+    border-top: 1px solid #4E4E4E;
+}
+
+#content {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: #f8f8f8;
+    padding-left: 20px;
+}
+
+.round {
+    font-size: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+    border-radius: 10px; /* future proofing */
     margin: 5px;
+    padding: 2px;
 }
 
-input[type="text"], input[type="password"] {
-    width: 200px;
+.content-image {
+    text-align: center;
 }
 
-select {
-    width: 205px;
+.content-title {
+    font-variant: small-caps;
+    padding-top: 10px;
 }
 
-#account_transaction_list, #account_list {
-    width: 100%;
-    font-size: 11px;
+.content-picture {
+    border: 10px solid #ededed;
 }
 
-#account_transaction_list TH, #account_list TH {
-    text-align: left;
-    border-bottom: 1px solid;
+#logo {
+    text-align: center;
 }
 
-#account_transaction_list TD #account_list TD {
-    width: 25%;
+.clear {
+    clear: both;
 }
 
 .flash-message-success {
