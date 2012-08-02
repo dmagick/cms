@@ -19,6 +19,10 @@ $basedir = dirname(dirname(__FILE__));
  */
 require $basedir.'/config/config.php';
 
+if (function_exists('date_default_timezone_set') === TRUE) {
+    date_default_timezone_set('Australia/NSW');
+}
+
 /**
  * A list of systems.
  * All of these are included at the start.
