@@ -24,7 +24,7 @@ class post
      */
     public static function getPosts($limit=10)
     {
-        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username";
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username AS postbyuser";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
         $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
@@ -49,7 +49,7 @@ class post
      */
     public static function getPostByDate($postdate, $postsubject)
     {
-        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username";
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username AS postbyuser";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
         $sql .= " WHERE DATE(p.postdate) = :postdate AND p.subject=:postsubject";
@@ -75,6 +75,52 @@ class post
         }
         $url = date('Y-m-d', $postdate).'/'.urlencode($postsubject);
         return $url;
+    }
+
+    /**
+     * Change a postgres timestamp into a nice date.
+     *
+     * @param string $datetime The timestamp to transform.
+     */
+    public static function niceDate($datetime)
+    {
+        $time = strtotime($datetime);
+        $date = date('jS M, Y', $time);
+        return $date;
+    }
+
+    /**
+     * Process an action for the frontend.
+     *
+     * @param string $action The action to process.
+     *
+     * @return void
+     */
+    public static function process($action='')
+    {
+
+        switch ($action)
+        {
+            default:
+                $post = Post::getPosts(1);
+                if (empty($post) === TRUE) {
+                    template::serveTemplate('post.empty');
+                    template::display();
+                } else {
+                    $post['postdate'] = post::niceDate($post['postdate']);
+                    $keywords = array(
+                        'content',
+                        'postbyuser',
+                        'postdate',
+                        'subject',
+                    );
+                    foreach ($keywords as $keyword) {
+                        template::setKeyword('post.show', $keyword, $post[$keyword]);
+                    }
+                    template::serveTemplate('post.show');
+                }
+            break;
+        }
     }
 
 }
