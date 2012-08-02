@@ -1,7 +1,9 @@
-drop table cms_users;
-drop table cms_user_login_locks;
+drop sequence cms_posts_postid;
+drop sequence cms_posts_queue_queueid;
 drop table cms_posts;
 drop table cms_posts_queue;
+drop table cms_users;
+drop table cms_user_login_locks;
 
 create table cms_users (
     userid serial primary key,
@@ -20,7 +22,7 @@ create table cms_user_login_locks
 create index cms_user_login_locks_details on cms_user_login_locks(ip, start_time, end_time);
 
 create table cms_posts (
-    postid serial primary key,
+    postid int not null primary key,
     subject text,
     content text,
     postdate timestamp with time zone,
@@ -28,13 +30,16 @@ create table cms_posts (
 );
 
 create table cms_posts_queue (
-    queueid serial primary key,
+    queueid int not null primary key,
     postid int,
     subject text,
     content text,
     postdate timestamp with time zone,
     postby int references cms_users(userid)
 );
+
+create sequence cms_posts_postid;
+create sequence cms_posts_queue_queueid;
 
 insert into cms_users(username, userpasswd, useractive) values('admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', true);
 
