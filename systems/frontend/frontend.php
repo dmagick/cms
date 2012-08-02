@@ -37,7 +37,7 @@ class frontend
      */
     public static function display()
     {
-        $page = '';
+        $page = 'post';
         if (isset($_SERVER['PATH_INFO']) === TRUE) {
             $page = trim($_SERVER['PATH_INFO'], '/');
         }
@@ -53,18 +53,10 @@ class frontend
                     template::display();
                 }
 
-                $bits   = implode('/', $bits);
+                $bits = implode('/', $bits);
                 if (isValidSystem($system) === TRUE) {
                     call_user_func_array(array($system, 'process'), array($bits));
                 }
-            }
-        } else {
-            template::serveTemplate('header');
-            template::display();
-            $posts = Post::getPosts(1);
-            if (empty($posts) === TRUE) {
-                template::serveTemplate('post.empty');
-                template::display();
             }
         }
 
