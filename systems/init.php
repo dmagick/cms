@@ -24,24 +24,30 @@ if (function_exists('date_default_timezone_set') === TRUE) {
 }
 
 /**
- * A list of systems.
- * All of these are included at the start.
- * Everything is made available.
+ * A list of systems that are required for each page load.
+ */
+$requiredSystems = array(
+    'db',
+    'frontend',
+    'messagelog',
+    'session',
+    'template',
+    'url',
+);
+
+/**
+ * A list of valid non-required systems.
  * This list is also used to by isValidSystem
  * to make sure a user isn't trying to cause errors by
  * making up their own url.
  * 
  * @see isValidSystem
+ * @see loadSystem
  */
 $systems = array(
+    'about',
     'contact',
-    'db',
-    'frontend',
-    'messagelog',
     'post',
-    'session',
-    'template',
-    'url',
     'user',
 );
 
@@ -59,9 +65,46 @@ $systems = array(
 function isValidSystem($systemName=NULL)
 {
     global $systems;
-    if (in_array($systemName, $systems) === TRUE) {
+    global $requiredSystems;
+    if (
+        in_array($systemName, $systems) === TRUE ||
+        in_array($systemName, $requiredSystems) === TRUE
+    ) {
         return TRUE;
     }
+    return FALSE;
+}
+
+/**
+ * Load a particular system into memory.
+ *
+ * If something has already been loaded (either it's required or something
+ * else has loaded it previously), this will just return.
+ *
+ * @param string $systemName The system to load.
+ *
+ * @return boolean Returns false if the system is invalid, otherwise it
+ *                 loads the system and returns true.
+ */
+function loadSystem($systemName=NULL)
+{
+    global $basedir;
+    global $requiredSystems;
+
+    static $_loaded = array();
+    if (isset($_loaded[$systemName]) === TRUE) {
+        return TRUE;
+    }
+
+    if (isValidSystem($systemName) === TRUE) {
+        if (in_array($systemName, $requiredSystems) === FALSE) {
+            require $basedir.'/systems/'.$systemName.'/'.$systemName.'.php';
+        }
+
+        $_loaded[$systemName] = TRUE;
+        return TRUE;
+    }
+
     return FALSE;
 }
 
@@ -70,7 +113,7 @@ function isValidSystem($systemName=NULL)
  * Since we're using a consistent structure,
  * we can just loop over 'em to do it all in one go.
  */
-foreach ($systems as $system) {
+foreach ($requiredSystems as $system) {
     require $basedir.'/systems/'.$system.'/'.$system.'.php';
 }
 
