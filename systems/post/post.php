@@ -79,7 +79,7 @@ class post
         $sql    .= " SELECT p.postid, p.subject, p.postdate, 'previous' AS pos";
         $sql    .= " FROM ".db::getPrefix()."posts p";
         $sql    .= " WHERE p.postid < :postprev";
-        $sql    .= " ORDER BY postid ASC LIMIT 1";
+        $sql    .= " ORDER BY postid DESC LIMIT 1";
         $sql    .= ")";
         $sql    .= " UNION ALL ";
         $sql    .= "(";
