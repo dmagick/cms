@@ -1,5 +1,5 @@
 ~template::include::header.empty~
-<div class="middle-full">
+<div style="text-align: center;">
     <br/>
     <br/>
     <br/>
