@@ -61,6 +61,40 @@ class post
     }
 
     /**
+     * Get the next and previous post based on the post id passed in.
+     *
+     * Returns an array of information about the next and previous:
+     * - postid
+     * - subject
+     * - date
+     * - whether it's previous or next
+     *
+     * @param integer $postid The post to get next/previous for.
+     *
+     * @return array
+     */
+    public static function getNextAndPrevPost($postid)
+    {
+        $sql     = "(";
+        $sql    .= " SELECT p.postid, p.subject, p.postdate, 'previous' AS pos";
+        $sql    .= " FROM ".db::getPrefix()."posts p";
+        $sql    .= " WHERE p.postid < :postprev";
+        $sql    .= " ORDER BY postid ASC LIMIT 1";
+        $sql    .= ")";
+        $sql    .= " UNION ALL ";
+        $sql    .= "(";
+        $sql    .= " SELECT p.postid, p.subject, p.postdate, 'next' AS pos";
+        $sql    .= " FROM ".db::getPrefix()."posts p";
+        $sql    .= " WHERE p.postid > :postnext";
+        $sql    .= " ORDER BY postid ASC LIMIT 1";
+        $sql    .= ")";
+        $query   = db::select($sql, array($postid, $postid));
+        $results = db::fetchAll($query);
+
+        return $results;
+    }
+
+    /**
      * Return a safe url based on the post date and subject.
      *
      * @param string $postdate    The date of the post.
@@ -101,27 +135,83 @@ class post
 
         switch ($action)
         {
-            default:
-                $post = Post::getPosts(1);
-                if (empty($post) === TRUE) {
-                    template::serveTemplate('post.empty');
-                    template::display();
-                } else {
-                    $post['postdate'] = post::niceDate($post['postdate']);
-                    $keywords = array(
-                        'content',
-                        'postbyuser',
-                        'postdate',
-                        'subject',
-                    );
-                    foreach ($keywords as $keyword) {
-                        template::setKeyword('post.show', $keyword, $post[$keyword]);
-                    }
-                    template::setKeyword('header', 'pagetitle', ' - '.$post['subject']);
-                    template::serveTemplate('post.show');
-                }
+            case '':
+                Post::showLatestPost();
             break;
+
+            default:
+                if (strpos($action, '/') === FALSE) {
+                    Post::showLatestPost();
+                } else {
+                    list($date, $subject) = explode('/', $action);
+                    $post = Post::getPostByDate($date, $subject);
+                    if (empty($post) === FALSE) {
+                        Post::showPost($post);
+                    } else {
+                        template::serveTemplate('post.invalid');
+                    }
+                }
         }
+    }
+
+    /**
+     * Show the latest post.
+     *
+     * Works out the latest and passes it off to the showPost function.
+     *
+     * @return void
+     */
+    public static function showLatestPost()
+    {
+        $post = Post::getPosts(1);
+        Post::showPost($post);
+    }
+
+    /**
+     * Show a particular post.
+     * 
+     * Also works out the next and previous urls to show for the side nav bars.
+     *
+     * @param array $post The post info to show.
+     *
+     * @return void
+     */
+    public static function showPost($post=array())
+    {
+        if (empty($post) === TRUE) {
+            template::serveTemplate('post.empty');
+            return;
+        }
+
+        $post['postdate'] = post::niceDate($post['postdate']);
+        $keywords = array(
+            'content',
+            'postbyuser',
+            'postdate',
+            'subject',
+        );
+        foreach ($keywords as $keyword) {
+            template::setKeyword('post.show', $keyword, $post[$keyword]);
+        }
+        template::setKeyword('header', 'pagetitle', ' - '.$post['subject']);
+
+        $nextpost = '';
+        $prevpost = '';
+
+        $nextandprev = Post::getNextAndPrevPost($post['postid']);
+        foreach ($nextandprev as $otherPost) {
+            $url = Post::safeUrl($otherPost['postdate'], $otherPost['subject']);
+            if ($otherPost['pos'] === 'previous') {
+                $prevpost = $url;
+            } else {
+                $nextpost = $url;
+            }
+        }
+
+        template::setKeyword('post.next',     'nextpost',     $nextpost);
+        template::setKeyword('post.previous', 'previouspost', $prevpost);
+
+        template::serveTemplate('post.show');
     }
 
 }
