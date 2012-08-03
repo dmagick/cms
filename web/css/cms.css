@@ -6,6 +6,11 @@ body {
     margin: 0px;
 }
 
+a {
+    color: #292727;
+    text-decoration: none;
+}
+
 #menu {
     margin: 5px;
     text-align: center;
