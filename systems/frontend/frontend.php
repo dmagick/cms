@@ -71,6 +71,17 @@ class frontend
                     template::serveTemplate('header');
                 }
 
+                /**
+                 * Uhoh! Someone's trying to find something that
+                 * doesn't exist.
+                 */
+                if (loadSystem($system) === FALSE) {
+                    template::unload('header');
+                    template::serveTemplate('error.technical');
+                    template::display();
+                    return;
+                }
+
                 $url = '/'.$system;
                 if (isset($menuItems[$url]) === TRUE) {
                     $menuItems[$url]['selected'] = TRUE;
