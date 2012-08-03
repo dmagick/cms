@@ -48,13 +48,14 @@ class contact
         switch ($action)
         {
             case 'submit':
-                template::setKeyword('contact', 'contactheader', 'Thanks for contacting us. We will be in touch as soon as possible.');
+                $contactheader = 'Thanks for contacting us. We will be in touch as soon as possible.';
             break;
 
             default:
-                template::setKeyword('contact', 'contactheader', '');
+                $contactheader = '';
         }
 
+        template::setKeyword('contact', 'contactheader', $contactheader);
         template::serveTemplate('contact');
     }
 
