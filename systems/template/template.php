@@ -321,6 +321,33 @@ class Template
 
         return self::$_keywords[$template]['~'.$keyword.'~'];
     }
+
+    /**
+     * Unload a template from the template stack.
+     *
+     * This is useful if the header is loaded but then something happens
+     * and the empty header needs to be displayed instead.
+     * The header template can be unloaded from the stack so you only
+     * see the header once instead of twice.
+     * It removes it from the stack and also removes all keywords that may
+     * have been set.
+     *
+     * @param string $template The template to unload from the stack.
+     *
+     * @return void
+     */
+    public static function unload($template='')
+    {
+        if (in_array($template, self::$_templateStack) === TRUE) {
+            $key = array_search($template, self::$_templateStack);
+            if ($key !== FALSE) {
+                unset(self::$_templateStack[$key]);
+            }
+            if (isset(self::$_keywords[$template]) === TRUE) {
+                unset(self::$_keywords[$template]);
+            }
+        }
+    }
 }
 
 /* vim: set expandtab ts=4 sw=4: */
