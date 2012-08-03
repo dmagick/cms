@@ -42,6 +42,19 @@ class frontend
             $page = trim($_SERVER['PATH_INFO'], '/');
         }
 
+        $menuItems = array(
+            '/' => array(
+                'name'     => 'Home',
+                'selected' => TRUE,
+            ),
+            '/about' => array(
+                'name' => 'About',
+            ),
+            '/contact' => array(
+                'name' => 'Contact',
+            ),
+        );
+
         if (empty($page) === FALSE) {
             $info = trim($page, '/');
             $bits = explode('/', $info);
@@ -52,12 +65,33 @@ class frontend
                     template::serveTemplate('header');
                 }
 
+                $url = '/'.$system;
+                if (isset($menuItems[$url]) === TRUE) {
+                    $menuItems[$url]['selected'] = TRUE;
+                    unset($menuItems['/']['selected']);
+                }
+
                 $bits = implode('/', $bits);
                 if (isValidSystem($system) === TRUE) {
                     call_user_func_array(array($system, 'process'), array($bits));
                 }
             }
         }
+
+        $menu = '';
+        foreach ($menuItems as $url => $info) {
+            $class = '';
+            if (isset($info['selected']) === TRUE && $info['selected'] === TRUE) {
+                $class = 'here';
+            }
+
+            $menu .= '<li class="'.$class.'">';
+            $menu .= '<a href="~url::baseurl~'.$url.'">'.$info['name'].'</a>';
+            $menu .= '</li>';
+            $menu .= "\n";
+        }
+
+        template::setKeyword('header', 'menu', $menu);
 
         template::serveTemplate('footer');
         template::display();

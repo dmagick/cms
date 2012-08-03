@@ -11,9 +11,7 @@
         </div>
         <div id="menu">
             <ul>
-                <li class="here">Home</li>
-                <li>About</li>
-                <li>Contact</li>
+                ~menu~
             </ul>
         </div>
         <div id="content" class="round">
