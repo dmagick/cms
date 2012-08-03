@@ -55,6 +55,12 @@ class frontend
             ),
         );
 
+        /**
+         * Set the default page title to nothing.
+         * This is used for including extra information (eg the post subject).
+         */
+        template::setKeyword('header', 'pagetitle', '');
+
         if (empty($page) === FALSE) {
             $info = trim($page, '/');
             $bits = explode('/', $info);
