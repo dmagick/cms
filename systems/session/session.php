@@ -29,6 +29,11 @@ class session
     private static $_flashMessages = array();
 
     /**
+     * A flag to check if the session has been started or not.
+     */
+    private static $_started = FALSE;
+
+    /**
      * Set the directory where to get session files from.
      * This is done at the top of the main index script.
      * Does a basic check to make sure the dir exists and is
@@ -62,6 +67,10 @@ class session
      */
     public static function start()
     {
+        if (self::$_started === TRUE) {
+            return;
+        }
+
         if (self::$_sessionDir === NULL) {
             throw new Exception("Session dir hasn't been set");
         }
@@ -71,6 +80,8 @@ class session
         if (isset($_SESSION['_flashMessages']) === TRUE) {
             self::$_flashMessages = $_SESSION['_flashMessages'];
         }
+
+        self::$_started = TRUE;
     }
 
     /**
@@ -83,6 +94,9 @@ class session
      */
     public static function set($var, $val)
     {
+        if (self::$_started === FALSE) {
+            self::start();
+        }
         $_SESSION[$var] = $val;
     }
 
@@ -96,6 +110,10 @@ class session
      */
     public static function get($var)
     {
+        if (self::$_started === FALSE) {
+            throw new Exception("session hasn't been started yet");
+        }
+
         if (isset($_SESSION[$var]) === FALSE) {
             throw new Exception("$var has not been set in the session");
         }
@@ -113,6 +131,10 @@ class session
      */
     public static function has($var)
     {
+        if (self::$_started === FALSE) {
+            throw new Exception("session hasn't been started yet");
+        }
+
         if (isset($_SESSION[$var]) === TRUE) {
             return TRUE;
         }
@@ -129,6 +151,10 @@ class session
      */
     public static function remove($var)
     {
+        if (self::$_started === FALSE) {
+            throw new Exception("session hasn't been started yet");
+        }
+
         if (self::has($var) === FALSE) {
             throw new Exception("$var has not been set in the session");
         }
@@ -189,6 +215,7 @@ class session
     public static function save()
     {
         session_write_close();
+        self::$_started = FALSE;
     }
 }
 
