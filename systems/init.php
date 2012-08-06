@@ -131,7 +131,6 @@ try {
 }
 
 try {
-    session::start();
     db::connect($config['db']);
 } catch (Exception $e) {
     messagelog::enable();
