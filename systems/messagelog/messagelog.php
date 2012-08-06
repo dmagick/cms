@@ -24,32 +24,6 @@ class MessageLog
     private static $_logFile = NULL;
 
     /**
-     * Whether the log file is enabled or not.
-     *
-     * @see disable
-     * @see enable
-     */
-    private static $_enabled = FALSE;
-
-    /**
-     * Enable a log file.
-     * If it's not enabled, nothing will be written.
-     */
-    public static function enable()
-    {
-        self::$_enabled = TRUE;
-    }
-
-    /**
-     * Disable a log file.
-     * A disabled log isn't written to.
-     */
-    public static function disable()
-    {
-        self::$_enabled = FALSE;
-    }
-
-    /**
      * Set the message log location to a particular file.
      *
      * Checks to make sure that:
@@ -101,17 +75,13 @@ class MessageLog
      * @throws exception Throws an exception if the log location isn't set
      *                   or if we give it an invalid log message type to
      *                   deal with.
-     * @uses   messagelog::_enabled
      */
     public static function LogMessage($info)
     {
-        if (self::$_enabled === FALSE) {
-            return;
-        }
-
         if (self::$_logFile === NULL) {
             throw new Exception("Log file has not been set");
         }
+
         $time = date('Y-m-d H:i:s');
         $type = gettype($info);
         switch ($type) {

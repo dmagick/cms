@@ -130,8 +130,6 @@ try {
     exit;
 }
 
-messagelog::enable();
-
 try {
     db::connect($config['db']);
 } catch (Exception $e) {
