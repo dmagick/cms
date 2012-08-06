@@ -97,10 +97,17 @@ class contact
         if ($sendform === TRUE) {
             $log  = "Someone contacted you. Details are:\n";
             $log .= "From: ".$email."\n";
-            $log .= "Message: ".$message."\n";
+            $log .= "Message: ".$message."\n\n";
             messageLog::LogMessage($log);
             template::serveTemplate('contact.send');
             return;
+        }
+
+        if (empty($_POST) === FALSE) {
+            $log  = "Someone tried to contact you but failed. Details are:\n";
+            $log .= "Post variables:".print_r($_POST, TRUE)."\n";
+            $log .= "Session info:".print_r($_SESSION, TRUE)."\n\n";
+            messageLog::LogMessage($log);
         }
 
         $types = array('+', '-');
