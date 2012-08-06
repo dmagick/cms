@@ -130,10 +130,11 @@ try {
     exit;
 }
 
+messagelog::enable();
+
 try {
     db::connect($config['db']);
 } catch (Exception $e) {
-    messagelog::enable();
     messagelog::LogMessage($e->getMessage());
     template::serveTemplate('error.technical');
     template::display();
