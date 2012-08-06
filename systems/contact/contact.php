@@ -29,34 +29,116 @@ class contact
         template::setKeyword('header', 'pagetitle', ' - Contact Us');
 
         $elements = array(
-            'content',
-            'email',
-            'subject',
+            'email'   => 'email address',
+            'message' => 'message',
         );
-
-        foreach ($elements as $element) {
-            $$element = '';
-            if (isset($_POST[$element]) === TRUE) {
-                $$element = htmlspecialchars($_POST[$element]);
-            }
-            template::setKeyword('contact', $element, $$element);
-        }
 
         if (isset($_POST) === FALSE || empty($_POST) === TRUE) {
             $action = '';
         }
 
+        $contactheader = '';
+        $sendform      = FALSE;
+        $errormessage  = '';
+
         switch ($action)
         {
             case 'submit':
-                $contactheader = 'Thanks for contacting us. We will be in touch as soon as possible.';
-            break;
+                $token         = '';
+                $spamcheck     = '';
+                $sendform      = TRUE;
 
-            default:
-                $contactheader = '';
+                try {
+                    $token     = session::get('token');
+                    $spamcheck = session::get('spamcheck');
+                } catch (Exception $e) {
+                    $errormessage = 'There was a problem submitting the form. Please try again.';
+                    $sendform     = FALSE;
+                }
+
+                if (
+                    empty($token) === TRUE ||
+                    isset($_POST['token']) === FALSE ||
+                    ($_POST['token'] !== $token)
+                ) {
+                    $errormessage = 'There was a problem submitting the form. Please try again.';
+                    $sendform     = FALSE;
+                }
+
+                if (
+                    isset($_POST['spamcheck']) === FALSE ||
+                    empty($_POST['spamcheck']) === TRUE ||
+                    ($_POST['spamcheck'] != $spamcheck)
+                ) {
+                    $errormessage = 'There was a problem checking your answer. Please try again.';
+                    $sendform     = FALSE;
+                }
+            break;
         }
 
-        template::setKeyword('contact', 'contactheader', $contactheader);
+        foreach ($elements as $element => $elementDescription) {
+            $$element = '';
+            if (isset($_POST[$element]) === TRUE && empty($_POST[$element]) === FALSE) {
+                $$element = htmlspecialchars($_POST[$element]);
+            } else {
+                if ($sendform === TRUE) {
+                    $errormessage .= 'You forgot to fill in the '.$elementDescription."\n";
+                    $sendform      = FALSE;
+                }
+            }
+            template::setKeyword('contact', $element, $$element);
+            template::setKeyword('contact.send', $element, $$element);
+
+            if ($element === 'message') {
+                template::setKeyword('contact.send', $element, nl2br($$element));
+            }
+        }
+
+        if ($sendform === TRUE) {
+            $log  = "Someone contacted you. Details are:\n";
+            $log .= "From: ".$email."\n";
+            $log .= "Message: ".$message."\n";
+            messageLog::LogMessage($log);
+            template::serveTemplate('contact.send');
+            return;
+        }
+
+        $types = array('+', '-');
+        $typeK = array_rand($types);
+        $type  = $types[$typeK];
+
+        $number1 = rand(1,15);
+        $number2 = $number1;
+        while ($number2 == $number1) {
+            $number2 = rand(1, 15);
+        }
+
+        switch ($type) {
+            case '+':
+                $answer = $number1 + $number2;
+                break;
+
+            case '-':
+                if ($number2 > $number1) {
+                    $numberSwitch = $number2;
+                    $number2      = $number1;
+                    $number1      = $numberSwitch;
+                }
+
+                $answer = $number1 - $number2;
+                break;
+        }
+
+        $spamcheck = $number1." ".$type." ".$number2;
+
+        $token = md5(uniqid('contact'.rand(1,20), TRUE));
+        session::set('token', $token);
+        session::set('spamcheck', $answer);
+
+        template::setKeyword('contact', 'token', $token);
+        template::setKeyword('contact', 'spamcheck', $spamcheck);
+        template::setKeyword('contact', 'contactheader', nl2br(trim($contactheader."\n".$errormessage)));
+
         template::serveTemplate('contact');
     }
 
