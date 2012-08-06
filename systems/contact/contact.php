@@ -24,8 +24,6 @@ class contact
      */
     public static function process($action='')
     {
-
-        loadSystem('session');
         session::start();
 
         template::setKeyword('header', 'pagetitle', ' - Contact Us');
