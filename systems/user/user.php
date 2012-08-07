@@ -166,7 +166,7 @@ class user
      */
     private static function _isLockedOut($update=TRUE)
     {
-        $ip     = self::_getIp();
+        $ip     = getIp();
         $sql    = "select attempts from ".db::getPrefix()."user_login_locks where ip=:ip and NOW() between start_time AND end_time";
         $query  = db::select($sql, array($ip));
         $result = db::fetch($query);
@@ -199,27 +199,6 @@ class user
                 ':ip' => $ip,
                 );
         $result = db::execute($sql, $values);
-    }
-
-    /**
-     * Gets the ip from the users browser.
-     * Checks for X_FORWARDED_FOR in case they are behind a proxy.
-     * If that's not available, uses REMOTE_ADDR
-     *
-     * @return string The users ip.
-     *
-     * @static
-     */
-    private static function _getIp()
-    {
-        $ip = '';
-        if (isset($_SERVER['X_FORWARDED_FOR']) === TRUE) {
-            $addrs = explode(',',$_SERVER['X_FORWARDED_FOR']);
-            $ip    = array_pop($addrs);
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        return trim($ip);
     }
 
     /**
@@ -266,7 +245,7 @@ class user
 
         $sql    = "delete from ".db::getPrefix()."user_login_locks WHERE ip=:ip";
         $values = array(
-                ':ip' => self::_getIp(),
+                ':ip' => getIp(),
                 );
         $result = db::execute($sql, $values);
         return $user['user_id'];
