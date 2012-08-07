@@ -29,7 +29,7 @@ if (function_exists('date_default_timezone_set') === TRUE) {
 $requiredSystems = array(
     'db',
     'frontend',
-    'log',
+    'stats',
     'messagelog',
     'session',
     'template',

@@ -4,7 +4,7 @@ drop table cms_posts;
 drop table cms_posts_queue;
 drop table cms_users;
 drop table cms_user_login_locks;
-drop table cms_logs;
+drop table cms_stats;
 
 create table cms_users (
     userid serial primary key,
@@ -42,10 +42,11 @@ create table cms_posts_queue (
 create sequence cms_posts_postid;
 create sequence cms_posts_queue_queueid;
 
-create table cms_logs (
-    logid serial not null primary key,
+create table cms_stats (
+    statid serial not null primary key,
     ip inet,
     url text,
+    referer text,
     logtime timestamp with time zone,
     timetaken float,
     querytotal int,

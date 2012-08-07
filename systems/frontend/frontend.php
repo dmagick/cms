@@ -117,7 +117,7 @@ class frontend
 
         $timeTaken  = microtime(TRUE) - $pageStart;
         $queryCount = db::getQueryCount();
-        log::recordHit($timeTaken, $queryCount);
+        stats::recordHit($timeTaken, $queryCount);
 
     }
 }

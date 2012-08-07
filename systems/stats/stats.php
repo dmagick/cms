@@ -28,9 +28,9 @@ class log
     public static function recordHit($timetaken=0, $querycounts=array())
     {
         $sql  = "INSERT INTO ".db::getPrefix()."logs";
-        $sql .= "(ip, url, logtime, timetaken, querytotal, queryunique)";
+        $sql .= "(ip, url, referer, logtime, timetaken, querytotal, queryunique)";
         $sql .= " VALUES ";
-        $sql .= "(:ip, :url, NOW(), :timetaken, :querytotal, :queryunique)";
+        $sql .= "(:ip, :url, :referer, NOW(), :timetaken, :querytotal, :queryunique)";
 
         $url = '';
         if (isset($_SERVER['REQUEST_URI']) === TRUE) {
@@ -45,9 +45,15 @@ class log
             $querycounts['unique'] = -1;
         }
 
+        $referer = '';
+        if (isset($_SERVER['REDIRECT_URL']) === TRUE) {
+            $referer = $_SERVER['REDIRECT_URL'];
+        }
+
         $values = array(
             ':ip'          => getIp(),
             ':url'         => $url,
+            ':referer'     => $referer,
             ':timetaken'   => number_format($timetaken, 8),
             ':querytotal'  => $querycounts['total'],
             ':queryunique' => $querycounts['unique'],
