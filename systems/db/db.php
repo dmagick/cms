@@ -182,6 +182,12 @@ class db
         } else {
             $result = $query->execute($values);
         }
+
+        if ($result !== TRUE) {
+            $msg  = 'Unable to execute sql:'.$sql."\n";
+            $msg .= 'Info:'.var_export($query->errorInfo(), TRUE);
+            messageLog::LogMessage($msg);
+        }
         return $result;
     }
 
@@ -207,10 +213,17 @@ class db
         self::_logQuery($sql, $values);
         $query = self::$_dbconn->prepare($sql);
         if (empty($values) === TRUE) {
-            $query->execute();
+            $result = $query->execute();
         } else {
-            $query->execute($values);
+            $result = $query->execute($values);
         }
+
+        if ($result !== TRUE) {
+            $msg  = 'Unable to execute sql:'.$sql."\n";
+            $msg .= 'Info:'.var_export($query->errorInfo(), TRUE);
+            messageLog::LogMessage($msg);
+        }
+
         return $query;
     }
 
