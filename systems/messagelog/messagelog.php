@@ -17,6 +17,11 @@
 class MessageLog
 {
     /**
+     * The current log level.
+     */
+    private static $_logLevel = '';
+
+    /**
      * The log file that will be written to.
      *
      * @see setLog
@@ -64,6 +69,27 @@ class MessageLog
     }
 
     /**
+     * Set the current log level to a particular one.
+     *
+     * @param string $level The new level to set.
+     *
+     * @return void
+     * @throws exception Throws an exception if the level isn't valid.
+     */
+    public static function setLogLevel($level='info')
+    {
+        $levels = array(
+            'info',
+            'debug',
+        );
+
+        if (in_array($level, $levels) === FALSE) {
+            throw new Exception("Unable to set log level to ".$level);
+        }
+        self::$_logLevel = $level;
+    }
+
+    /**
      * Log a particular message to the previously set location if logging is
      * enabled.
      *
@@ -76,8 +102,22 @@ class MessageLog
      *                   or if we give it an invalid log message type to
      *                   deal with.
      */
-    public static function LogMessage($info)
+    public static function LogMessage($info, $level='info')
     {
+
+        /**
+         * If we are trying to log a 'debug' message,
+         * but the current level is only set to 'info',
+         * don't log it.
+         */
+        switch ($level) {
+            case 'debug':
+                if (self::$_logLevel === 'info') {
+                    return;
+                }
+            break;
+        }
+
         if (self::$_logFile === NULL) {
             throw new Exception("Log file has not been set");
         }
@@ -102,6 +142,7 @@ class MessageLog
             default:
                 throw new Exception("Not sure how to handle this type of variable: ".gettype($info));
         }
+
         error_log($time." ".str_replace("\n", "\n\t", $info)."\n", 3, self::$_logFile);
     }
 }
