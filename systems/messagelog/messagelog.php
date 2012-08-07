@@ -19,7 +19,7 @@ class MessageLog
     /**
      * The current log level.
      */
-    private static $_logLevel = '';
+    private static $_logLevel = 'info';
 
     /**
      * The log file that will be written to.
@@ -105,6 +105,10 @@ class MessageLog
     public static function LogMessage($info, $level='info')
     {
 
+        if (self::$_logFile === NULL) {
+            throw new Exception("Log file has not been set");
+        }
+
         /**
          * If we are trying to log a 'debug' message,
          * but the current level is only set to 'info',
@@ -112,14 +116,10 @@ class MessageLog
          */
         switch ($level) {
             case 'debug':
-                if (self::$_logLevel === 'info') {
+                if (self::$_logLevel !== 'debug') {
                     return;
                 }
             break;
-        }
-
-        if (self::$_logFile === NULL) {
-            throw new Exception("Log file has not been set");
         }
 
         $time = date('Y-m-d H:i:s');
