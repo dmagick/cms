@@ -1,6 +1,6 @@
 <?php
 /**
- * Log class file.
+ * Stats class file.
  *
  * @author Chris Smith <dmagick@gmail.com>
  * @version 1.0
@@ -8,12 +8,12 @@
  */
 
 /**
- * The log class.
+ * The stats class.
  * Logs hits into the db.
  *
  * @package cms
  */
-class log
+class stats
 {
 
     /**
@@ -27,7 +27,7 @@ class log
      */
     public static function recordHit($timetaken=0, $querycounts=array())
     {
-        $sql  = "INSERT INTO ".db::getPrefix()."logs";
+        $sql  = "INSERT INTO ".db::getPrefix()."stats";
         $sql .= "(ip, url, referer, logtime, timetaken, querytotal, queryunique)";
         $sql .= " VALUES ";
         $sql .= "(:ip, :url, :referer, NOW(), :timetaken, :querytotal, :queryunique)";
