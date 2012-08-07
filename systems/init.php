@@ -29,6 +29,7 @@ if (function_exists('date_default_timezone_set') === TRUE) {
 $requiredSystems = array(
     'db',
     'frontend',
+    'log',
     'messagelog',
     'session',
     'template',
@@ -106,6 +107,27 @@ function loadSystem($systemName=NULL)
     }
 
     return FALSE;
+}
+
+/**
+ * Gets the ip from the users browser.
+ * Checks for X_FORWARDED_FOR in case they are behind a proxy.
+ * If that's not available, uses REMOTE_ADDR
+ *
+ * @return string The users ip.
+ *
+ * @static
+ */
+function getIp()
+{
+    $ip = '';
+    if (isset($_SERVER['X_FORWARDED_FOR']) === TRUE) {
+        $addrs = explode(',',$_SERVER['X_FORWARDED_FOR']);
+        $ip    = array_pop($addrs);
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return trim($ip);
 }
 
 /**

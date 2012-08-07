@@ -4,6 +4,7 @@ drop table cms_posts;
 drop table cms_posts_queue;
 drop table cms_users;
 drop table cms_user_login_locks;
+drop table cms_logs;
 
 create table cms_users (
     userid serial primary key,
@@ -40,6 +41,16 @@ create table cms_posts_queue (
 
 create sequence cms_posts_postid;
 create sequence cms_posts_queue_queueid;
+
+create table cms_logs (
+    logid serial not null primary key,
+    ip inet,
+    url text,
+    logtime timestamp with time zone,
+    timetaken float,
+    querytotal int,
+    queryunique int
+);
 
 insert into cms_users(username, userpasswd, useractive) values('admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', true);
 

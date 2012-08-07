@@ -42,6 +42,8 @@ class frontend
             $page = trim($_SERVER['PATH_INFO'], '/');
         }
 
+        $pageStart = microtime(TRUE);
+
         $menuItems = array(
             '/' => array(
                 'name'     => 'Home',
@@ -112,6 +114,11 @@ class frontend
 
         template::serveTemplate('footer');
         template::display();
+
+        $timeTaken  = microtime(TRUE) - $pageStart;
+        $queryCount = db::getQueryCount();
+        log::recordHit($timeTaken, $queryCount);
+
     }
 }
 
