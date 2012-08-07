@@ -18,6 +18,13 @@ class db
 {
 
     /**
+     * Query log.
+     */
+    private static $_queries = array(
+        'total' => 0,
+    );
+
+    /**
      * Keep the db connection handle.
      */
     private static $_dbconn = NULL;
@@ -118,12 +125,10 @@ class db
      * Also logs a message.
      *
      * @return mixed Returns the result of PDO::beginTransaction()
-     *
-     * @uses messagelog::logmessage
      */
     public static function beginTransaction()
     {
-        messagelog::logmessage("BEGIN;");
+        self::_logQuery("BEGIN;");
         $result = self::$_dbconn->beginTransaction();
         return $result;
     }
@@ -134,12 +139,10 @@ class db
      * Also logs a message.
      *
      * @return mixed Returns the result of PDO::commit()
-     *
-     * @uses messagelog::logmessage
      */
     public static function commitTransaction()
     {
-        messagelog::logmessage("COMMIT;");
+        self::_logQuery("COMMIT;");
         $result = self::$_dbconn->commit();
         return $result;
     }
@@ -150,12 +153,10 @@ class db
      * Also logs a message.
      *
      * @return mixed Returns the result of PDO::rollback()
-     *
-     * @uses messagelog::logmessage
      */
     public static function rollbackTransaction()
     {
-        messagelog::logmessage("ROLLBACK;");
+        self::_logQuery("ROLLBACK;");
         $result = self::$_dbconn->rollback();
         return $result;
     }
@@ -174,8 +175,7 @@ class db
      */
     public static function execute($sql, array $values=array())
     {
-        messagelog::logmessage($sql);
-        messagelog::logmessage($values);
+        self::_logQuery($sql, $values);
         $query = self::$_dbconn->prepare($sql);
         if (empty($values) === TRUE) {
             $result = $query->execute();
@@ -201,12 +201,10 @@ class db
      *
      * @see  db::fetch
      * @see  db::fetchAll
-     * @uses messagelog::logmessage
      */
     public static function select($sql, array $values=array())
     {
-        messagelog::logmessage($sql);
-        messagelog::logmessage($values);
+        self::_logQuery($sql, $values);
         $query = self::$_dbconn->prepare($sql);
         if (empty($values) === TRUE) {
             $query->execute();
@@ -244,6 +242,44 @@ class db
     public static function fetchAll($queryObject)
     {
         return $queryObject->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Log a query to the message log system and also
+     * keep a local cache of the queries (and their count).
+     */
+    private static function _logQuery($sql, $values=array())
+    {
+        messagelog::logmessage($sql);
+        if (empty($values) === FALSE) {
+            messagelog::logmessage($values);
+        }
+
+        $sql  = preg_replace('/\s+/', ' ', $sql);
+        $hash = md5($sql);
+        if (isset(self::$_queries[$hash]) === FALSE) {
+            self::$_queries[$hash] = array(
+                'count' => 0,
+            );
+        }
+        self::$_queries[$hash]['count']++;
+        self::$_queries['total']++;
+    }
+
+    /**
+     * Return the number of queries run (unique and total).
+     *
+     * @return array
+     */
+    public static function getQueryCount()
+    {
+        // Take 1 off for the unique count, because
+        // 'total' is also kept in the _queries array.
+        $info = array(
+            'total' => self::$_queries['total'],
+            'unique' => sizeof(self::$_queries) - 1,
+        );
+        return $info;
     }
 
 }
