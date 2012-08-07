@@ -250,9 +250,9 @@ class db
      */
     private static function _logQuery($sql, $values=array())
     {
-        messagelog::logmessage($sql);
+        messagelog::LogMessage($sql, 'debug');
         if (empty($values) === FALSE) {
-            messagelog::logmessage($values);
+            messagelog::LogMessage($values, 'debug');
         }
 
         $sql  = preg_replace('/\s+/', ' ', $sql);
