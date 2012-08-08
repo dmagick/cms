@@ -52,9 +52,11 @@ class frontend
             '/about' => array(
                 'name' => 'About',
             ),
+            /**
             '/contact' => array(
                 'name' => 'Contact',
             ),
+             */
         );
 
         /**
