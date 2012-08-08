@@ -74,10 +74,20 @@ a {
 }
 
 .postby {
-    font-size: 12px;
+    font-size: 14px;
     margin-right: 10px;
     width: 100%;
     text-align: right;
+}
+
+.previouspost {
+    float: left;
+    font-size: 14px;
+}
+
+.nextpost {
+    float: right;
+    font-size: 14px;
 }
 
 .flash-message-success {

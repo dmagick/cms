@@ -1,3 +1,3 @@
 <div class="previouspost">
-    <a href="~url::baseurl~/post/~previouspost~">View previous post</a>
+    <a href="~url::baseurl~/post/~previouspost~">Previous post</a>
 </div>
