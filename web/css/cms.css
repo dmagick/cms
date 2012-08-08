@@ -90,6 +90,24 @@ a {
     font-size: 14px;
 }
 
+.contact-question {
+    width: 500px;
+    border: 1px solid red;
+    float: left;
+}
+
+.contact-answer {
+}
+
+input[type=text] {
+    width: 300px;
+}
+
+textarea {
+    width: 300px;
+    height: 100px;
+}
+
 .flash-message-success {
     padding: 2px;
     border: 1px solid #e5e5e5;
