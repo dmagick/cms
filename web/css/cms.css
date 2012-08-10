@@ -108,6 +108,13 @@ textarea {
     height: 100px;
 }
 
+#footer-contact {
+    width: 99%;
+    text-align: right;
+    font-size: 14px;
+    font-style: italic;
+}
+
 .flash-message-success {
     padding: 2px;
     border: 1px solid #e5e5e5;
