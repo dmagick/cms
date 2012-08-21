@@ -47,8 +47,7 @@ $requiredSystems = array(
  */
 $systems = array(
     'about',
-    //'contact',
-    'post',
+    'contact',
     'user',
 );
 
@@ -162,6 +161,9 @@ try {
 }
 
 if (isset($config['defaultpage']) === TRUE) {
+    if (empty($config['defaultpage']) === FALSE) {
+        $systems[] = $config['defaultpage'];
+    }
     frontend::setDefaultPage($config['defaultpage']);
 }
 
