@@ -29,8 +29,9 @@ class contact
         template::setKeyword('header', 'pagetitle', ' - Contact Us');
 
         $elements = array(
-            'email'   => 'email address',
-            'message' => 'message',
+            'email'   => 'the email address',
+            'message' => 'the message',
+            'name'    => 'your name',
         );
 
         if (isset($_POST) === FALSE || empty($_POST) === TRUE) {
@@ -82,7 +83,7 @@ class contact
                 $$element = htmlspecialchars($_POST[$element]);
             } else {
                 if ($sendform === TRUE) {
-                    $errormessage .= 'You forgot to fill in the '.$elementDescription."\n";
+                    $errormessage .= 'You forgot to fill in '.$elementDescription."\n";
                     $sendform      = FALSE;
                 }
             }
