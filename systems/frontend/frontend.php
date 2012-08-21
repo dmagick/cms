@@ -60,11 +60,9 @@ class frontend
             '/about' => array(
                 'name' => 'About',
             ),
-            /**
             '/contact' => array(
                 'name' => 'Contact',
             ),
-             */
         );
 
         /**
@@ -111,6 +109,11 @@ class frontend
                     call_user_func_array(array($system, 'process'), array($bits));
                 }
             }
+        } else {
+            // No page or default system?
+            // Fall back to 'index'.
+            template::serveTemplate('header');
+            template::serveTemplate('index');
         }
 
         $menu = '';
