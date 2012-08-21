@@ -46,8 +46,8 @@ class frontend
     public static function display()
     {
         $page = self::getDefaultPage();
-        if (isset($_SERVER['PATH_INFO']) === TRUE) {
-            $page = trim($_SERVER['PATH_INFO'], '/');
+        if (isset($_SERVER['PHP_SELF']) === TRUE) {
+            $page = trim($_SERVER['PHP_SELF'], '/');
         }
 
         $pageStart = microtime(TRUE);
@@ -90,7 +90,7 @@ class frontend
                     if (isset($_SERVER['PHP_SELF']) === TRUE) {
                         $url = $_SERVER['PHP_SELF'];
                     }
-                    $msg = "Unable to find system '".$system."' for url '".$url."'";
+                    $msg = "Unable to find system '".$system."' for url '".$url."'. page is '".$page."'. server info:".var_export($_SERVER, TRUE);
                     messagelog::LogMessage($msg);
                     template::unload('header');
                     template::serveTemplate('error.technical');
