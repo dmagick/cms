@@ -8,9 +8,12 @@ $config = array(
         'type'     => 'pgsql',
         'prefix'   => 'cms_',
     ),
+
     'cachedir' => dirname(__FILE__).'/../cache',
     'logfile'  => dirname(__FILE__).'/../cache/log',
-    'url'      => 'http://',
+
+    'url'         => 'http://',
+    'defaultpage' => '',
 );
 
 /* vim: set expandtab ts=4 sw=4: */

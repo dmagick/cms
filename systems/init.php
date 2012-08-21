@@ -161,4 +161,8 @@ try {
     exit;
 }
 
+if (isset($config['defaultpage']) === TRUE) {
+    frontend::setDefaultPage($config['defaultpage']);
+}
+
 /* vim: set expandtab ts=4 sw=4: */

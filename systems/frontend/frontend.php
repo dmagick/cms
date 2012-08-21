@@ -18,6 +18,14 @@ class frontend
 {
 
     /**
+     * The default page to display.
+     *
+     * Set by setDefaultPage() and returned by getDefaultPage().
+     */
+    private static $_defaultPage = '';
+
+
+    /**
      * Display a page.
      *
      * If the user hasn't logged in, it remembers the page you are trying
@@ -37,7 +45,7 @@ class frontend
      */
     public static function display()
     {
-        $page = 'post';
+        $page = self::getDefaultPage();
         if (isset($_SERVER['PATH_INFO']) === TRUE) {
             $page = trim($_SERVER['PATH_INFO'], '/');
         }
@@ -128,6 +136,31 @@ class frontend
         stats::recordHit($timeTaken, $queryCount);
 
     }
+
+    /**
+     * Get the default page, previously set by setDefaultPage
+     *
+     * @return string
+     */
+    static public function getDefaultPage()
+    {
+        return self::$_defaultPage;
+    }
+
+
+    /**
+     * Set the default page for the frontend to show.
+     *
+     * It should come from the config file.
+     *
+     * @param string $page The new default page.
+     */
+    static public function setDefaultPage($page='')
+    {
+        self::$_defaultPage = $page;
+    }
+
+
 }
 
 /* vim: set expandtab ts=4 sw=4: */
