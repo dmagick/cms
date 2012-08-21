@@ -1,22 +1,21 @@
             $(document).ready(function() {
                 $(".fancybox").fancybox();
                 $("#show-gallery").click(function() {
-                    $.fancybox.open([
-                        {
-                            href : 'http://dev/5/picture.jpg',
-                            title : 'My title'
+                    $.fancybox.open([                        {
+                            href  : 'http://localhost/~csmith/splashofphotography.com/gallery/_MG_9702_small.jpg',
+                            title : 'My title',
                         },
                         {
-                            href : 'http://dev/5/picture1.jpg',
-                            title : '2nd title'
+                            href  : 'http://localhost/~csmith/splashofphotography.com/gallery/picture1.jpg',
+                            title : 'My title',
                         },
                         {
-                            href : 'http://dev/5/picture2.jpg',
-                            title : '2nd title'
+                            href  : 'http://localhost/~csmith/splashofphotography.com/gallery/picture2.jpg',
+                            title : 'My title',
                         },
                         {
-                            href : 'http://dev/5/picture3.jpg',
-                            title : '2nd title'
+                            href  : 'http://localhost/~csmith/splashofphotography.com/gallery/picture3.jpg',
+                            title : 'My title',
                         }
                         ],
                         {
@@ -38,4 +37,3 @@
                 });
 
             });
-
