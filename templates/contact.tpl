@@ -19,7 +19,7 @@
         How can we help you?
     </div>
     <div class="contact-answer">
-        <textarea name="message">~message~</textarea>
+        <textarea name="message" rows="10">~message~</textarea>
     </div>
     <div class="contact-question">
         To prove you're not spam,
