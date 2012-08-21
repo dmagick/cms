@@ -80,6 +80,12 @@ class frontend
                  * doesn't exist.
                  */
                 if (loadSystem($system) === FALSE) {
+                    $url = '';
+                    if (isset($_SERVER['PHP_SELF']) === TRUE) {
+                        $url = $_SERVER['PHP_SELF'];
+                    }
+                    $msg = "Unable to find system '".$system."' for url '".$url."'";
+                    messagelog::LogMessage($msg);
                     template::unload('header');
                     template::serveTemplate('error.technical');
                     template::display();
