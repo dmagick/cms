@@ -1,136 +1,152 @@
 body {
-    font-family: arial;
-    font-size: 18px;
-    background: #fff;
-    color: #292727;
-    margin: 0px;
+	font-family: arial;
+	font-size: 18px;
+	background: #000;
+	color: #e5e5e5;
+	margin: 10px;
 }
 
-a {
-    color: #292727;
-    text-decoration: none;
+a, a:link, a:active, a:visited {
+	color: #e5e5e5;
+	text-decoration: none;
 }
 
-#menu {
-    margin: 5px;
-    text-align: center;
-    font-variant: small-caps;
+img {
+	border: 0px;
 }
 
-#menu ul {
-    margin-left: 0;
-    padding-left: 0;
-    display: inline;
-} 
-
-#menu ul li {
-    margin-left: 20px;
-    margin-bottom: 0;
-    padding: 2px 15px 5px;
-    list-style: none;
-    display: inline;
-}
-
-#menu ul li.here {
-    border-top: 1px solid #4E4E4E;
-}
-
-#content {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background: #f8f8f8;
-    padding-left: 20px;
-}
-
-.round {
-    font-size: 16px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
-    border-radius: 10px; /* future proofing */
-    margin: 5px;
-    padding: 2px;
-}
-
-.content-image {
-    text-align: center;
-}
-
-.content-title {
-    font-variant: small-caps;
-    padding-top: 10px;
-}
-
-.content-picture {
-    border: 10px solid #ededed;
+#header {
+	height: 100px;
+	margin: 5px;
+	padding: 5px;
 }
 
 #logo {
-    text-align: center;
+	height: 70px;
+	padding: 0px;
+	margin: 0px;
+}
+
+#menu {
+	width: 80%;
+	position: absolute;
+	font-size: 16px;
+	margin: 5px 5px 5px 5px;
+	padding-left: 200px;
+	font-variant: small-caps;
+	background: #222121;
+	height: 30px;
+}
+
+#menu ul {
+	margin-left: 0;
+	padding-left: 0;
+	display: inline;
+} 
+
+#menu ul li {
+	margin-left: 20px;
+	padding: 2px 10px 5px;
+	list-style: none;
+	display: inline;
+}
+
+#menu ul li.here {
+	border-top: 1px;
+}
+
+.round {
+	font-size: 16px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px; /* for old Konqueror browsers */
+	border-radius: 10px; /* future proofing */
+	margin: 5px;
+	padding: 2px;
+	background-color: #171616;
 }
 
 .clear {
-    clear: both;
+	clear: both;
 }
 
-.postby {
-    font-size: 14px;
-    margin-right: 10px;
-    width: 100%;
-    text-align: right;
+#footer {
+	height: 30px;
+	margin: 5px;
+	padding: 10px;
 }
 
-.previouspost {
-    float: left;
-    font-size: 14px;
+#content {
+	padding: 10px;
+	margin: 5px;
+	overflow: auto;
+	font-size: 14px;
+    min-height: 600px;
 }
 
-.nextpost {
-    float: right;
-    font-size: 14px;
+/** work around for ie6 */
+* html #content {
+    height: 600px;
+}
+
+#footer-content {
+	padding: 7px 15px;
+	text-align: right;
+	font-style: italic;
+	font-weight: bold;
+	color: #585858;
+}
+
+#top {
+	height: 40%;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#gallery {
+	height: 500px;
+	padding-left: 20%;
+	padding-right: 20px;
+}
+
+input[type="text"], textarea {
+    width: 500px;
+}
+
+input[type="submit"] {
+    text-align: center;
+    width: 200px;
+}
+
+.req {
+    vertical-align: top;
+    color: #ccc;
+}
+
+form {
+    padding-left: 50px;
 }
 
 .contact-question {
-    width: 500px;
-    border: 1px solid red;
+    width: 250px;
     float: left;
+    margin-bottom: 10px;
 }
 
 .contact-answer {
+    margin-bottom: 10px;
 }
 
-input[type=text] {
-    width: 300px;
+.contact-submit {
+    margin-left: 250px;
 }
 
-textarea {
-    width: 300px;
-    height: 100px;
+#contact {
+    min-height: 600px;
 }
 
-#footer-contact {
-    width: 99%;
-    text-align: right;
-    font-size: 14px;
-    font-style: italic;
-}
-
-.flash-message-success {
-    padding: 2px;
-    border: 1px solid #e5e5e5;
-    background: #f9f9f9;
-    width: 100%;
-}
-
-.flash-message-error {
-    padding: 2px;
-    border: 1px solid #e5e5e5;
-    background: #f9f9f9;
-    width: 100%;
-}
-
-.flash-message-image {
-    width: 22px;
-    float: left;
+/** work around for ie6 */
+* html #contact {
+    height: 600px;
 }
 

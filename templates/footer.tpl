@@ -1,8 +1,8 @@
-            </div><!--end div content//-->
-        </div><!-- end div wrapper//-->
-        <div id="footer-contact">
-            Contact Splash of Photography - info @ splashofphotography.com
+        </div>
+        <div id="footer" class="round">
+            <div id="footer-content">
+                Contact Us - info @ splashofphotography.com
+            </div>
         </div>
     </body>
 </html>
-
