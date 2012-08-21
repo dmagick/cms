@@ -9,10 +9,19 @@
  * @package cms
  */
 
+ini_set('display_errors', true);
+error_reporting(E_ALL);
+
 /**
  * Set up the base dir.
  */
 $basedir = dirname(dirname(__FILE__));
+
+/**
+* We don't use any external scripts so keep the path
+* as simple as possible.
+*/
+ini_set('include_path', $basedir.':');
 
 /**
  * Of course we need our config.
