@@ -133,7 +133,9 @@ function getIp()
         $addrs = explode(',',$_SERVER['X_FORWARDED_FOR']);
         $ip    = array_pop($addrs);
     } else {
-        $ip = $_SERVER['REMOTE_ADDR'];
+        if (isset($_SERVER['REMOTE_ADDR']) === TRUE) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
     }
     return trim($ip);
 }
@@ -147,7 +149,7 @@ foreach ($requiredSystems as $system) {
     require $basedir.'/systems/'.$system.'/'.$system.'.php';
 }
 
-template::setDir($basedir.'/templates');
+template::setDir($basedir.'/templates', 'template');
 url::setUrl($config['url']);
 
 try {

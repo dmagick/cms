@@ -32,14 +32,16 @@ class Template
     private static $_keywords = array();
 
     /**
-     * Where to get template files from.
+     * Where to get template files from, and also
+     * cache files (where to get them from and put them).
      *
      * @var string
-     * @see setTemplateDir
+     * @see setDir
+     * @see getDir
      *
      * @static
      */
-    private static $_templateDir = NULL;
+    private static $_directories = array();
 
     /**
      * Set the directory where to get templates from.
@@ -47,9 +49,10 @@ class Template
      * Does a basic check to make sure the dir exists, and if
      * it doesn't it will throw an exception.
      *
-     * @param string $dir The template dir to use.
+     * @param string $dir  The dir to use.
+     * @param string $type The type of directory being set (template or cache).
      *
-     * @see _templateDir
+     * @see _directories
      *
      * @return void
      * @throws exception Throws an exception if the template dir
@@ -57,32 +60,34 @@ class Template
      *
      * @static
      */
-    public static function setDir($dir)
+    public static function setDir($dir, $type='template')
     {
         if (is_dir($dir) === FALSE) {
             throw new Exception("Template dir doesn't exist");
         }
 
-        self::$_templateDir = $dir;
+        self::$_directories[$type] = $dir;
     }
 
     /**
      * Get the current template directory.
      *
-     * @see _templateDir
+     * @param string $type The type of directory to return.
      *
-     * @return string    Returns the template dir
-     * @throws exception Throws an exception if the template dir hasn't been
+     * @see _directories
+     *
+     * @return string    Returns the dir (template or cache).
+     * @throws exception Throws an exception if the dir hasn't been
      *                   set before.
      *
      * @static
      */
-    public static function getDir()
+    public static function getDir($type='template')
     {
-        if (self::$_templateDir === NULL) {
-            throw new Exception("The template dir has not been set.");
+        if (isset(self::$_directories[$type]) === FALSE) {
+            throw new Exception("The ".$type." dir has not been set.");
         }
-        return self::$_templateDir;
+        return self::$_directories[$type];
     }
 
     /**
@@ -101,7 +106,7 @@ class Template
      */
     public static function getTemplate($templateName=NULL)
     {
-        $file = self::$_templateDir.'/'.$templateName.'.tpl';
+        $file = self::getDir('template').'/'.$templateName.'.tpl';
         if (is_file($file) === FALSE) {
             throw new Exception("Template ".$templateName." doesn't exist");
         }
