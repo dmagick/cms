@@ -85,28 +85,25 @@ class frontend
                  * Uhoh! Someone's trying to find something that
                  * doesn't exist.
                  */
-                if (loadSystem($system) === FALSE) {
+                if (loadSystem($system) === TRUE) {
+                    $url = '/'.$system;
+                    if (isset($menuItems[$url]) === TRUE) {
+                        $menuItems[$url]['selected'] = TRUE;
+                        unset($menuItems['/']['selected']);
+                    }
+
+                    $bits = implode('/', $bits);
+                    if (isValidSystem($system) === TRUE) {
+                        call_user_func_array(array($system, 'process'), array($bits));
+                    }
+                } else {
                     $url = '';
                     if (isset($_SERVER['PHP_SELF']) === TRUE) {
                         $url = $_SERVER['PHP_SELF'];
                     }
                     $msg = "Unable to find system '".$system."' for url '".$url."'. page is '".$page."'. server info:".var_export($_SERVER, TRUE);
                     messagelog::LogMessage($msg);
-                    template::unload('header');
                     template::serveTemplate('404');
-                    template::display();
-                    return;
-                }
-
-                $url = '/'.$system;
-                if (isset($menuItems[$url]) === TRUE) {
-                    $menuItems[$url]['selected'] = TRUE;
-                    unset($menuItems['/']['selected']);
-                }
-
-                $bits = implode('/', $bits);
-                if (isValidSystem($system) === TRUE) {
-                    call_user_func_array(array($system, 'process'), array($bits));
                 }
             }
         } else {
