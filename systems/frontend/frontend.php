@@ -46,8 +46,8 @@ class frontend
     public static function display()
     {
         $page = self::getDefaultPage();
-        if (isset($_SERVER['PHP_SELF']) === TRUE) {
-            $page = trim($_SERVER['PHP_SELF'], '/');
+        if (isset($_SERVER['REQUEST_URI']) === TRUE) {
+            $page = trim($_SERVER['REQUEST_URI'], '/');
         }
 
         $pageStart = microtime(TRUE);
