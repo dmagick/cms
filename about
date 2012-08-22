@@ -1,7 +1,7 @@
 <?php
 /**
- * Index file handles setting up a couple of base things.
- * Init sets up the rest.
+ * Init sets up everything we need. This is here
+ * because mod_rewrite isn't always available.
  *
  * @author Chris Smith <dmagick@gmail.com>
  * @version 1.0
@@ -16,6 +16,14 @@
 
 require dirname(__FILE__).'/systems/init.php';
 
+$system = basename(__FILE__);
+if (isValidSystem($system) === FALSE) {
+    $msg = "Unable to use system '".$system."'; server info:".var_export($_SERVER, TRUE);
+    messagelog::LogMessage($msg);
+    url::redirect();
+    exit;
+}
+
 frontend::display();
 
-/* vim: set expandtab ts=4 sw=4: */
+/* vim: set expandtab ts=4 sw=4 filetype=php: */
