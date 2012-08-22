@@ -39,7 +39,7 @@ $code .= <<<EOT
                         {
                         helpers : {
                             title : {
-                                type: 'outside'
+                                type: 'over'
                             },
                             thumbs : {
                                 width: 75,
