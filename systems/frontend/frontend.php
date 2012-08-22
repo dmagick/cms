@@ -93,7 +93,7 @@ class frontend
                     $msg = "Unable to find system '".$system."' for url '".$url."'. page is '".$page."'. server info:".var_export($_SERVER, TRUE);
                     messagelog::LogMessage($msg);
                     template::unload('header');
-                    template::serveTemplate('error.technical');
+                    template::serveTemplate('404');
                     template::display();
                     return;
                 }
