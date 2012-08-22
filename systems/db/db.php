@@ -61,10 +61,10 @@ class db
         $connstring = '';
         foreach ($required as $reqField) {
             if (isset($details[$reqField]) === FALSE) {
-                throw new Exception("Required field ".$reqField." is missing");
+                throw new Exception("Unable to connect to db: Required field ".$reqField." is missing");
             }
             if (empty($details[$reqField]) === TRUE) {
-                throw new Exception("Required field ".$reqField." is empty");
+                throw new Exception("Unable to connect to db: Required field ".$reqField." is empty");
             }
         }
 
