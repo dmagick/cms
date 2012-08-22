@@ -45,9 +45,17 @@ class frontend
      */
     public static function display()
     {
-        $page = self::getDefaultPage();
-        if (isset($_SERVER['REQUEST_URI']) === TRUE) {
-            $page = trim($_SERVER['REQUEST_URI'], '/');
+        $page = '';
+
+        if (isset($_SERVER['REQUEST_URI']) === TRUE && isset($_SERVER['HTTP_HOST']) === TRUE) {
+            $protocol = 'http';
+            $page     = $protocol.'//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'];
+            $page     = trim($page, '/');
+            $page     = substr($page, strlen(url::getUrl()));
+        }
+
+        if (empty($page) === TRUE) {
+            $page = self::getDefaultPage();
         }
 
         $pageStart = microtime(TRUE);
@@ -159,7 +167,6 @@ class frontend
     {
         self::$_defaultPage = $page;
     }
-
 
 }
 
