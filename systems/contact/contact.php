@@ -24,6 +24,8 @@ class contact
      */
     public static function process($action='')
     {
+        global $config;
+
         session::start();
 
         template::setKeyword('header', 'pagetitle', ' - Contact Us');
@@ -101,6 +103,8 @@ class contact
             $log .= "Message: ".$message."\n\n";
             messageLog::LogMessage($log);
             template::serveTemplate('contact.send');
+            $headers = 'From: '.$email;
+            mail($config['contactemail'], 'Contact Form Submission', $log, $headers, '-f'.$email);
             return;
         }
 

@@ -14,6 +14,9 @@ $config = array(
 
     'url'         => 'http://',
     'defaultpage' => '',
+
+    // where to send contact form submissions.
+    'contactemail' => '',
 );
 
 /* vim: set expandtab ts=4 sw=4: */
