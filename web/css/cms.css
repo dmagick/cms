@@ -11,8 +11,8 @@ a, a:link, a:active, a:visited {
 	text-decoration: none;
 }
 
-img {
-	border: 0px;
+.gallery-image {
+	border: 10px solid white;
 }
 
 #header {
@@ -107,6 +107,11 @@ img {
 	height: 500px;
 	padding-left: 20%;
 	padding-right: 20px;
+}
+
+img .gallery-image {
+    padding: 20px;
+    background: white;
 }
 
 input[type="text"], textarea {
