@@ -45,19 +45,7 @@ class frontend
      */
     public static function display()
     {
-        $page = '';
-
-        if (isset($_SERVER['REQUEST_URI']) === TRUE && isset($_SERVER['HTTP_HOST']) === TRUE) {
-            $protocol = 'http';
-            $page     = $protocol.'//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'];
-            $page     = trim($page, '/');
-            $page     = substr($page, strlen(url::getUrl()));
-        }
-
-        if (empty($page) === TRUE) {
-            $page = self::getDefaultPage();
-        }
-
+        $page = self::getCurrentPage();
         $pageStart = microtime(TRUE);
 
         $menuItems = array(
@@ -80,8 +68,7 @@ class frontend
         template::setKeyword('header', 'pagetitle', '');
 
         if (empty($page) === FALSE) {
-            $info = trim($page, '/');
-            $bits = explode('/', $info);
+            $bits = explode('/', $page);
             if (empty($bits[0]) === FALSE) {
                 $system = array_shift($bits);
 
@@ -144,6 +131,31 @@ class frontend
         stats::recordHit($timeTaken, $queryCount);
 
     }
+
+    /**
+     * Get the current page trying to be viewed.
+     *
+     * @return string Returns the current page, or default page.
+     */
+    public static function getCurrentPage()
+    {
+        $page = '';
+
+        if (isset($_SERVER['REQUEST_URI']) === TRUE && isset($_SERVER['HTTP_HOST']) === TRUE) {
+            $protocol = 'http';
+            $page     = $protocol.'//'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['REQUEST_URI'];
+            $page     = substr($page, strlen(url::getUrl()));
+            $page     = trim($page, '/');
+        }
+
+        if (empty($page) === TRUE) {
+            $page = self::getDefaultPage();
+        }
+
+        return $page;
+    }
+
+
 
     /**
      * Get the default page, previously set by setDefaultPage
