@@ -42,7 +42,7 @@ class url
      *
      * @static
      */
-    public static function redirect($page, $admin=FALSE)
+    public static function redirect($page='', $admin=FALSE)
     {
         try {
             $url = self::getUrl().'/';
@@ -53,7 +53,10 @@ class url
         if ($admin === TRUE) {
             $url .= 'admin/';
         }
-        $url .= 'index.php/'.ltrim($page, '/');
+
+        if (empty($page) === FALSE) {
+            $url .= $page;
+        }
 
         header('Location: '.$url, TRUE);
         exit;
