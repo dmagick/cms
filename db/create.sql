@@ -27,6 +27,7 @@ create table cms_posts (
     subject text,
     content text,
     postdate timestamp with time zone,
+    modifieddate timestamp with time zone,
     postby int references cms_users(userid)
 );
 
@@ -36,6 +37,7 @@ create table cms_posts_queue (
     subject text,
     content text,
     postdate timestamp with time zone,
+    modifieddate timestamp with time zone,
     postby int references cms_users(userid)
 );
 
