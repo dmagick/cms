@@ -1,0 +1,23 @@
+<?php
+/**
+ * Process generating a gallery or blog gallery.
+ *
+ * @author Chris Smith <dmagick@gmail.com>
+ * @version 1.0
+ * @package cms
+ */
+
+/**
+ * Initialize the system.
+ * Init handles everything we need apart from displaying
+ * the front system.
+ */
+require dirname(__FILE__).'/systems/init.php';
+
+cache::setDir($config['cachedir']);
+
+require $basedir.'/systems/view/view.php';
+
+view::process();
+
+/* vim: set expandtab ts=4 sw=4 filetype=php: */
