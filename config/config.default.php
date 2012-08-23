@@ -9,8 +9,9 @@ $config = array(
         'prefix'   => 'cms_',
     ),
 
-    'cachedir' => dirname(__FILE__).'/../cache',
-    'logfile'  => dirname(__FILE__).'/../cache/log',
+    'cachedir' => realpath(dirname(__FILE__).'/../cache'),
+    'datadir'  => realpath(dirname(__FILE__).'/../data'),
+    'logfile'  => realpath(dirname(__FILE__).'/../cache/log'),
 
     'url'         => 'http://',
     'defaultpage' => '',
