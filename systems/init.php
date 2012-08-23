@@ -58,6 +58,7 @@ $requiredSystems = array(
 $systems = array(
     'about',
     'contact',
+    'post',
     'user',
 );
 
