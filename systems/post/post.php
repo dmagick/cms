@@ -24,7 +24,7 @@ class post
      */
     public static function getPosts($limit=10)
     {
-        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username AS postbyuser";
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, p.modifieddate, u.username AS postbyuser";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
         $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
@@ -49,7 +49,7 @@ class post
      */
     public static function getPostByDate($postdate, $postsubject)
     {
-        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, u.username AS postbyuser";
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, p.modifieddate, u.username AS postbyuser";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
         $sql .= " WHERE DATE(p.postdate) = :postdate AND p.subject=:postsubject";
@@ -212,6 +212,88 @@ class post
         template::setKeyword('post.previous', 'previouspost', $prevpost);
 
         template::serveTemplate('post.show');
+    }
+
+    public static function getGallery($post=array())
+    {
+
+        if (empty($post) === TRUE) {
+            return '';
+        }
+
+        loadSystem('cache');
+
+        $cached = cache::get('post', $post['postid'], 'gallery.js', $post['modifieddate']);
+
+        if ($cached !== FALSE) {
+            return $cached;
+        }
+
+        global $config;
+        $datapath = $config['datadir'].'/post/'.$post['postid'];
+
+        if (is_dir($datapath) === FALSE) {
+            return FALSE;
+        }
+
+        $files = glob($datapath.'/*.jpg');
+        if (empty($files) === TRUE) {
+            return '';
+        }
+
+        natsort($files);
+
+        $baseUrl = url::getUrl();
+
+$code  = <<<EOT
+            \$(document).ready(function() {
+                \$(".fancybox").fancybox();
+                \$("#show-gallery").click(function() {
+                    \$.fancybox.open([
+EOT;
+
+$images = '';
+foreach ($files as $file) {
+    $url = str_replace($config['datadir'], $baseUrl, $file);
+    $images .= <<<EOT
+                        {
+                            href  : '${url}',
+                            title : 'My title',
+                        },
+
+EOT;
+}
+$images = rtrim($images);
+$images = rtrim($images, ',')."\n";
+
+$code .= $images;
+
+$code .= <<<EOT
+                        ],
+                        {
+                        helpers : {
+                            title : {
+                                type: 'over'
+                            },
+                            thumbs : {
+                                width: 75,
+                                height: 50
+                            },
+                            overlay	: {
+                                opacity: 0.8
+                            }
+                        },
+                        prevEffect	: 'fade',
+                        nextEffect	: 'fade'
+                    });
+                });
+
+            });
+
+EOT;
+
+            cache::set('post', $post['postid'], 'gallery.js', $code);
+            return $code;
     }
 
 }
