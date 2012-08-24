@@ -1,86 +1,82 @@
 body {
-	font-family: arial;
-	font-size: 18px;
-	background: #000;
-	color: #e5e5e5;
-	margin: 10px;
+    font-family: arial;
+    font-size: 18px;
+    background: #000;
+    color: #e5e5e5;
+    margin: 10px;
 }
 
 a, a:link, a:active, a:visited {
-	color: #e5e5e5;
-	text-decoration: none;
-}
-
-.gallery-image {
-	border: 10px solid white;
+    color: #e5e5e5;
+    text-decoration: none;
 }
 
 #header {
-	height: 100px;
-	margin: 5px;
-	padding: 5px;
+    height: 100px;
+    margin: 5px;
+    padding: 5px;
 }
 
 #logo {
-	height: 70px;
-	padding: 0px;
-	margin: 0px;
+    height: 70px;
+    padding: 0px;
+    margin: 0px;
 }
 
 #menu {
-	width: 80%;
-	position: absolute;
-	font-size: 16px;
-	margin: 5px 5px 5px 5px;
-	padding-left: 200px;
-	font-variant: small-caps;
-	background: #222121;
-	height: 30px;
+    width: 80%;
+    position: absolute;
+    font-size: 16px;
+    margin: 5px 5px 5px 5px;
+    padding-left: 200px;
+    font-variant: small-caps;
+    background: #222121;
+    height: 30px;
 }
 
 #menu ul {
-	margin-left: 0;
-	padding-left: 0;
-	display: inline;
+    margin-left: 0;
+    padding-left: 0;
+    display: inline;
 } 
 
 #menu ul li {
-	margin-left: 20px;
-	padding: 2px 10px 5px;
-	list-style: none;
-	display: inline;
+    margin-left: 20px;
+    padding: 2px 10px 5px;
+    list-style: none;
+    display: inline;
 }
 
 #menu ul li.here {
-	border-top: 1px;
+    border-top: 1px;
 }
 
 .round {
-	font-size: 16px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px; /* for old Konqueror browsers */
-	border-radius: 10px; /* future proofing */
-	margin: 5px;
-	padding: 2px;
-	background-color: #171616;
+    font-size: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+    border-radius: 10px; /* future proofing */
+    margin: 5px;
+    padding: 2px;
+    background-color: #171616;
 }
 
 .clear {
-	clear: both;
+    clear: both;
 }
 
 #footer {
-	height: 30px;
-	margin: 5px;
-	padding: 10px;
+    height: 30px;
+    margin: 5px;
+    padding: 10px;
 }
 
 #content {
-	padding: 10px;
-	margin: 5px;
-	overflow: auto;
-	font-size: 14px;
+    padding: 10px;
+    margin: 5px;
+    overflow: auto;
+    font-size: 14px;
     min-height: 600px;
 }
 
@@ -90,24 +86,25 @@ a, a:link, a:active, a:visited {
 }
 
 #footer-content {
-	padding: 7px 15px;
-	text-align: right;
-	font-style: italic;
-	font-weight: bold;
-	color: #585858;
+    padding: 7px 15px;
+    text-align: right;
+    font-style: italic;
+    font-weight: bold;
+    color: #585858;
 }
 
 #top {
-	height: 40%;
-	padding-left: 50px;
-	padding-right: 50px;
+    height: 40%;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 #gallery {
-	height: 640px;
-    padding-top: 10px;
-	padding-left: 10%;
+    height: 640px;
+    padding-left: 10%;
     padding-bottom: 10px;
+    padding-top: 40px;
+    background:#0f0f0f;
 }
 
 input[type="text"], textarea {
@@ -176,12 +173,12 @@ form {
 .caption {
     position: absolute;
     top: 560px;
-	z-index:500;
-	padding: 0px 20px 5px 20px;
-	background:#000;
-	background:rgba(0,0,0,.5);
-	color:#fff;
-	border-top:1px solid #000;
-	text-shadow:none;
+    z-index:500;
+    padding: 0px 20px 5px 20px;
+    background:#000;
+    background:rgba(0,0,0,.5);
+    color:#fff;
+    border-top:1px solid #000;
+    text-shadow:none;
 }
 
