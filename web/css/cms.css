@@ -104,9 +104,10 @@ a, a:link, a:active, a:visited {
 }
 
 #gallery {
-	height: 500px;
-	padding-left: 20%;
-	padding-right: 20px;
+	height: 640px;
+    padding-top: 10px;
+	padding-left: 10%;
+    padding-bottom: 10px;
 }
 
 input[type="text"], textarea {
@@ -148,5 +149,39 @@ form {
 /** work around for ie6 */
 * html #contact {
     height: 600px;
+}
+
+#slides_nav {
+    width: 900px;
+}
+
+#slides_nav .slide-prev {
+    float: left;
+}
+
+#slides_nav .slide-next {
+    float: right;
+}
+
+.slides_container {
+    width:900px;
+    height:600px;
+}
+
+.slides_container div {
+    width:900px;
+    height:600px;
+}
+
+.caption {
+    position: absolute;
+    top: 560px;
+	z-index:500;
+	padding: 0px 20px 5px 20px;
+	background:#000;
+	background:rgba(0,0,0,.5);
+	color:#fff;
+	border-top:1px solid #000;
+	text-shadow:none;
 }
 

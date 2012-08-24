@@ -5,15 +5,39 @@
 
         <script src="~url::baseurl~/web/js/jquery-1.8.0.min.js"></script>
 
-        <script type="text/javascript" src="~url::baseurl~/web/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
-        <script type="text/javascript" src="~url::baseurl~/web/fancybox/source/jquery.fancybox.pack.js?v=2.0.6"></script>
-        <script type="text/javascript" src="~url::baseurl~/web/fancybox/source/helpers/jquery.fancybox-thumbs.js?v=2.0.6"></script>
-
-        <script type="text/javascript" src="~url::baseurl~/web/js/gallery.js?v=0.0.1"></script>
-
         <link rel="stylesheet" href="~url::baseurl~/web/css/cms.css?v=0.0.1" type="text/css" media="screen" />
-        <link rel="stylesheet" href="~url::baseurl~/web/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=2.0.6" type="text/css" media="screen" />
-        <link rel="stylesheet" href="~url::baseurl~/web/fancybox/source/jquery.fancybox.css?v=2.0.6" type="text/css" media="screen" />
+
+        <script src="web/js/slides.jquery.js"></script>
+    
+        <script>
+            $(function(){
+                $("#slides").slides({
+                    play: 5000,
+                    pause: 5000,
+                    hoverPause: true,
+                    slideSpeed: 1500,
+                    generatePagination: false,
+                    next: 'slide-next',
+                    prev: 'slide-prev',
+                    animationStart: function(current){
+                        $('.caption').animate({
+                            top: 600
+                        },100);
+                    },
+                    animationComplete: function(current){
+                        $('.caption').animate({
+                            top: 560
+                        },200);
+                    },
+                    slidesLoaded: function() {
+                        $('.caption').animate({
+                            top: 560
+                        },200);
+                    }
+                });
+            });
+        </script>
+
     </head>
 
     <body>
