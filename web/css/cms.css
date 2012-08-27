@@ -100,7 +100,7 @@ a, a:link, a:active, a:visited {
 }
 
 #gallery {
-    height: 640px;
+    height: 750px;
     padding-left: 10%;
     padding-bottom: 10px;
     padding-top: 40px;
@@ -153,10 +153,12 @@ form {
 }
 
 #slides_nav .slide-prev {
+    margin-top: 20px;
     float: left;
 }
 
 #slides_nav .slide-next {
+    margin-top: 20px;
     float: right;
 }
 
@@ -182,3 +184,38 @@ form {
     text-shadow:none;
 }
 
+#slides .pagination {
+    margin: 0px;
+    position:relative;
+    background:#dfdfdf;
+    width:800px;
+    padding:10px 10px;
+    float:left;
+    margin-left:30px;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+}
+
+#slides .pagination li {
+    float:left;
+    margin:2px 4px;
+    list-style:none;
+}
+
+#slides .pagination li a {
+    display:block;
+    width:100px;
+    margin:1px;
+    float:left;
+    background:#f9f9f9;
+}
+
+#slides .pagination li.current a {
+    border:1px solid #7f7f7f;
+    margin:0;
+}
+
+.postby {
+    text-align: right;
+}
