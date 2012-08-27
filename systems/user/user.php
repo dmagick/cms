@@ -267,7 +267,7 @@ class user
             session::setFlashMessage('You have been logged out.', 'success');
             session::remove('user');
         }
-        url::redirect('/');
+        url::redirect();
     }
 }
 
