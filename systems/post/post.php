@@ -183,12 +183,14 @@ class post
             return;
         }
 
+        $post['gallery']  = post::getGallery($post);
         $post['postdate'] = post::niceDate($post['postdate']);
         $keywords = array(
             'content',
             'postbyuser',
             'postdate',
             'subject',
+            'gallery',
         );
         foreach ($keywords as $keyword) {
             template::setKeyword('post.show', $keyword, $post[$keyword]);
@@ -221,79 +223,82 @@ class post
             return '';
         }
 
-        loadSystem('cache');
+        $dataDir = config::get('datadir');
 
-        $cached = cache::get('post', $post['postid'], 'gallery.js', $post['modifieddate']);
+        $path = $dataDir.'/post/'.$post['postid'];
 
-        if ($cached !== FALSE) {
-            return $cached;
+        if (is_dir($path) === FALSE) {
+            return '';
         }
 
-        global $config;
-        $datapath = $config['datadir'].'/post/'.$post['postid'];
-
-        if (is_dir($datapath) === FALSE) {
-            return FALSE;
-        }
-
-        $files = glob($datapath.'/*.jpg');
+        $files = glob($path.'/*.jpg');
         if (empty($files) === TRUE) {
             return '';
         }
 
         natsort($files);
 
-        $baseUrl = url::getUrl();
+        $images = array();
+        $thumbs = array();
+        foreach ($files as $file) {
+            $info   = getimagesize($file);
+            $width  = $info[0];
+            $height = $info[1];
 
-$code  = <<<EOT
-            \$(document).ready(function() {
-                \$(".fancybox").fancybox();
-                \$("#show-gallery").click(function() {
-                    \$.fancybox.open([
-EOT;
+            $url      = str_replace($dataDir, url::getUrl().'/data', $file);
+            $images[] = array(
+                'url'    => $url,
+                'width'  => $width,
+                'height' => $height,
+            );
 
-$images = '';
-foreach ($files as $file) {
-    $url = str_replace($config['datadir'], $baseUrl, $file);
-    $images .= <<<EOT
-                        {
-                            href  : '${url}',
-                            title : 'My title',
-                        },
+            $file   = $path.'/thumbs/'.basename($file);
+            $info   = getimagesize($file);
+            $width  = $info[0];
+            $height = $info[1];
 
-EOT;
-}
-$images = rtrim($images);
-$images = rtrim($images, ',')."\n";
+            $url      = str_replace($dataDir, url::getUrl().'/data', $file);
+            $thumbs[] = array(
+                'url'    => $url,
+                'width'  => $width,
+                'height' => $height,
+            );
+        }
 
-$code .= $images;
+        $code = '
+                <div id="gallery">
+                   <div id="slides">
+                       <div class="slides_container">
+        ';
 
-$code .= <<<EOT
-                        ],
-                        {
-                        helpers : {
-                            title : {
-                                type: 'over'
-                            },
-                            thumbs : {
-                                width: 75,
-                                height: 50
-                            },
-                            overlay	: {
-                                opacity: 0.8
-                            }
-                        },
-                        prevEffect	: 'fade',
-                        nextEffect	: 'fade'
-                    });
-                });
+        foreach ($images as $image) {
+            $code .= '<div>';
+            $code .= '<img src="'.$image['url'].'" width="'.$image['width'].'" height="'.$image['height'].'" />';
+            $code .= '</div>';
+        }
 
-            });
+        $code .= '     </div><!-- end slides_container //-->
+                       <div id="slides_nav">
+                            <a href="#" class="slide-prev"><img src="~url::baseurl~/web/images/prev.png" border="0" /></a>
+                            <ul class="pagination">
+        ';
 
-EOT;
+        foreach ($thumbs as $thumb) {
+            $code .= '<li>';
+            $code .= '<a href="#">';
+            $code .= '<img src="'.$thumb['url'].'" width="'.$thumb['width'].'" height="'.$height.'" />';
+            $code .= '</a>';
+            $code .= '</li>';
+        }
+        $code .= '
+                            </ul>
+                            <a href="#" class="slide-next"><img src="~url::baseurl~/web/images/next.png" border="0" /></a>
+                       </div>
+                    </div><!--end slides //-->
+                </div><!-- end gallery//-->
+        ';
 
-            cache::set('post', $post['postid'], 'gallery.js', $code);
-            return $code;
+        return $code;
     }
 
 }
