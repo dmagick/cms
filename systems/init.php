@@ -37,7 +37,7 @@ if (function_exists('date_default_timezone_set') === TRUE) {
  */
 $requiredSystems = array(
     'db',
-    'cache',
+    'config',
     'frontend',
     'stats',
     'messagelog',
@@ -153,6 +153,8 @@ foreach ($requiredSystems as $system) {
 
 template::setDir($basedir.'/templates', 'template');
 url::setUrl($config['url']);
+
+config::set($config);
 
 try {
     session::setDir($config['cachedir']);
