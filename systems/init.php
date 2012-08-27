@@ -59,7 +59,6 @@ $systems = array(
     'about',
     'contact',
     'post',
-    'user',
 );
 
 /**
