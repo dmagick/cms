@@ -10,9 +10,5 @@
     SetHandler application/x-httpd-php
 </Files>
 
-<Files view>
-    SetHandler application/x-httpd-php
-</Files>
-
 ErrorDocument 404 /
 
