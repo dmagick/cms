@@ -218,4 +218,21 @@ form {
 
 .postby {
     text-align: right;
+    width: 100%;
+}
+
+.postpagination {
+    border-bottom: 1px solid #585858;
+}
+
+.previouspost {
+    font-size: 14px;
+    padding-left: 30px;
+    float: left;
+}
+
+.nextpost {
+    font-size: 14px;
+    padding-right: 30px;
+    float: right;
 }
