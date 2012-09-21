@@ -59,10 +59,11 @@ class user
         template::serveTemplate('header.empty');
         template::display();
 
+        template::setKeyword('user.login', 'loginurl', self::getLoginUrl());
+
         if (empty($_POST) === TRUE) {
             $token = self::setToken();
             template::setKeyword('user.login', 'token', $token);
-            template::setKeyword('user.login', 'loginurl', self::getLoginUrl());
             template::serveTemplate('user.login');
             template::display();
         } else {
@@ -240,7 +241,6 @@ class user
         if ($username === NULL || $password === NULL) {
             throw new Exception("Unable to authenticate user");
         }
-
         $sql   = "select user_id from ".db::getPrefix()."users where username=:username and userpasswd=:password and useractive=TRUE";
         $query = db::select($sql, array($username, sha1($password)));
         $user  = db::fetch($query);
