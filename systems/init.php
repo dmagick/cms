@@ -12,6 +12,8 @@
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
+$pageStart = microtime(TRUE);
+
 /**
  * Set up the base dir.
  */
@@ -96,7 +98,7 @@ function isValidSystem($systemName=NULL)
  * @return boolean Returns false if the system is invalid, otherwise it
  *                 loads the system and returns true.
  */
-function loadSystem($systemName=NULL)
+function loadSystem($systemName=NULL, $area='frontend')
 {
     global $basedir;
     global $requiredSystems;
@@ -108,8 +110,16 @@ function loadSystem($systemName=NULL)
 
     if (isValidSystem($systemName) === TRUE) {
         if (in_array($systemName, $requiredSystems) === FALSE) {
-            require $basedir.'/systems/'.$systemName.'/'.$systemName.'.php';
+            switch ($area) {
+                case 'admin':
+                    $path = $basedir.'/systems/admin/'.$systemName.'/'.$systemName.'.php';
+                break;
+
+                default:
+                    $path = $basedir.'/systems/'.$systemName.'/'.$systemName.'.php';
+            }
         }
+        require $path;
 
         $_loaded[$systemName] = TRUE;
         return TRUE;
@@ -140,6 +150,18 @@ function getIp()
     }
     return trim($ip);
 }
+
+function logPageTime()
+{
+    global $pageStart;
+
+    $timeTaken  = microtime(TRUE) - $pageStart;
+    $queryCount = db::getQueryCount();
+    stats::recordHit($timeTaken, $queryCount);
+
+}
+
+register_shutdown_function('logPageTime');
 
 /**
  * Include all of our required systems.
