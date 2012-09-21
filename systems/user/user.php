@@ -241,7 +241,7 @@ class user
         if ($username === NULL || $password === NULL) {
             throw new Exception("Unable to authenticate user");
         }
-        $sql   = "select user_id from ".db::getPrefix()."users where username=:username and userpasswd=:password and useractive=TRUE";
+        $sql   = "select userid from ".db::getPrefix()."users where username=:username and userpasswd=:password and useractive=TRUE";
         $query = db::select($sql, array($username, sha1($password)));
         $user  = db::fetch($query);
 
@@ -254,7 +254,7 @@ class user
                 ':ip' => getIp(),
                 );
         $result = db::execute($sql, $values);
-        return $user['user_id'];
+        return $user['userid'];
     }
 
     /**
