@@ -19,6 +19,11 @@ class user
 {
 
     /**
+     * The url for the login template to use.
+     */
+    private static $_loginUrl = NULL;
+
+    /**
      * Number of minutes to lock someone out from too many
      * attempts to log in.
      *
@@ -57,6 +62,7 @@ class user
         if (empty($_POST) === TRUE) {
             $token = self::setToken();
             template::setKeyword('user.login', 'token', $token);
+            template::setKeyword('user.login', 'loginurl', self::getLoginUrl());
             template::serveTemplate('user.login');
             template::display();
         } else {
@@ -269,6 +275,30 @@ class user
         }
         url::redirect();
     }
+
+    /**
+     * Set the login url to use.
+     *
+     * @param string $url The url to use.
+     */
+    public static function setLoginUrl($url)
+    {
+        self::$_loginUrl = $url;
+    }
+
+    /**
+     * Return the login url to use as a keyword.
+     *
+     * Defaults to baseurl/user/login
+     */
+    public static function getLoginUrl()
+    {
+        if (self::$_loginUrl === NULL) {
+            return '~url::baseurl~';
+        }
+        return self::$_loginUrl;
+    }
+
 }
 
 /* vim: set expandtab ts=4 sw=4: */
