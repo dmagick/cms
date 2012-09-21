@@ -38,7 +38,7 @@ a, a:link, a:active, a:visited {
     margin-left: 0;
     padding-left: 0;
     display: inline;
-} 
+}
 
 #menu ul li {
     margin-left: 20px;
@@ -107,7 +107,7 @@ a, a:link, a:active, a:visited {
     background:#0f0f0f;
 }
 
-input[type="text"], textarea {
+input[type="text"], input[type="password"], textarea {
     width: 500px;
 }
 
