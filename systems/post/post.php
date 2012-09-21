@@ -240,25 +240,31 @@ class post
 
         $images = array();
         $thumbs = array();
-        foreach ($files as $file) {
+        foreach ($files as $k => $file) {
             $info   = getimagesize($file);
             $width  = $info[0];
             $height = $info[1];
 
-            $url      = str_replace($dataDir, url::getUrl().'/data', $file);
-            $images[] = array(
+            $url        = str_replace($dataDir, url::getUrl().'/data', $file);
+            $images[$k] = array(
                 'url'    => $url,
                 'width'  => $width,
                 'height' => $height,
             );
 
             $file   = $path.'/thumbs/'.basename($file);
+
+            if (is_file($file) === FALSE) {
+                unset($images[$k]);
+                continue;
+            }
+
             $info   = getimagesize($file);
             $width  = $info[0];
             $height = $info[1];
 
-            $url      = str_replace($dataDir, url::getUrl().'/data', $file);
-            $thumbs[] = array(
+            $url        = str_replace($dataDir, url::getUrl().'/data', $file);
+            $thumbs[$k] = array(
                 'url'    => $url,
                 'width'  => $width,
                 'height' => $height,
