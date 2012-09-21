@@ -1,0 +1,6 @@
+<Files user>
+    SetHandler application/x-httpd-php
+</Files>
+
+ErrorDocument 404 /
+
