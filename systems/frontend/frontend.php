@@ -46,7 +46,6 @@ class frontend
     public static function display()
     {
         $page = self::getCurrentPage();
-        $pageStart = microtime(TRUE);
 
         $menuItems = array(
             '/' => array(
@@ -125,11 +124,6 @@ class frontend
 
         template::serveTemplate('footer');
         template::display();
-
-        $timeTaken  = microtime(TRUE) - $pageStart;
-        $queryCount = db::getQueryCount();
-        stats::recordHit($timeTaken, $queryCount);
-
     }
 
     /**
