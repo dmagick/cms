@@ -223,9 +223,11 @@ class Template
     {
         $source  = array(
                     '~url::baseurl~',
+                    '~url::adminurl~',
                    );
         $replace = array(
                     url::getUrl(),
+                    url::getUrl().'/admin',
                    );
         
         if (strpos($content, '~flashmessage~') !== FALSE) {
