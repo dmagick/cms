@@ -2,7 +2,7 @@
                     <div>
                         <h2>Login to manage your cms</h2>
                         ~flashmessage~
-                        <form method="post" action="~url::baseurl~/user/login">
+                        <form method="post" action="~loginurl~/user/login">
                             <input type="hidden" name="token" value="~token~" />
                             <div class="account-field">
                                 Username:
