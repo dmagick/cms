@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" href="~url::baseurl~/web/css/cms.css?v=0.0.4" type="text/css" media="screen" />
+        <title>Splash of Photography - ~pagetitle~</title>
     </head>
     <body>
         <div id="container">
