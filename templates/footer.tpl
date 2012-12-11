@@ -1,8 +1,11 @@
-        </div>
-        <div id="footer" class="round">
-            <div id="footer-content">
-                Contact Us - info @ splashofphotography.com
+                </div>
+            </div>
+            <div id="footer">
+                <div id="bottom">
+                    <a href="#top">Back to top</a>
+                </div>
             </div>
         </div>
     </body>
 </html>
+

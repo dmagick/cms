@@ -1,37 +1,36 @@
-body {
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
     font-family: arial;
     font-size: 18px;
-    background: #000;
-    color: #e5e5e5;
-    margin: 10px;
+    background: #1e1e1e;
+    color: #aeaeae;
 }
 
 a, a:link, a:active, a:visited {
-    color: #e5e5e5;
+    color: #aeaeae;
     text-decoration: none;
 }
 
-#header {
-    height: 100px;
-    margin: 5px;
-    padding: 5px;
+#container {
+    min-height:100%;
+    position:relative;
 }
 
-#logo {
-    height: 70px;
-    padding: 0px;
-    margin: 0px;
+#header {
+    background:#fff;
+    padding:10px;
+    font-size: 28px;
+    padding: 5px;
+    padding-left: 200px;
+    font-variant: small-caps;
+    height: 100px;
 }
 
 #menu {
-    width: 80%;
     position: absolute;
-    font-size: 16px;
-    margin: 5px 5px 5px 5px;
-    padding-left: 200px;
-    font-variant: small-caps;
-    background: #222121;
-    height: 30px;
+    top: 40px;
 }
 
 #menu ul {
@@ -42,197 +41,45 @@ a, a:link, a:active, a:visited {
 
 #menu ul li {
     margin-left: 20px;
-    padding: 2px 10px 5px;
+    padding: 2px 20px 5px;
     list-style: none;
     display: inline;
 }
 
-#menu ul li.here {
-    border-top: 1px;
+#body {
+    padding:10px;
+    padding-bottom:50px;   /* Height of the footer */
 }
 
-.round {
-    font-size: 16px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
-    border-radius: 10px; /* future proofing */
-    margin: 5px;
-    padding: 2px;
-    background-color: #171616;
-}
-
-.clear {
-    clear: both;
-}
-
-#footer {
-    height: 30px;
-    margin: 5px;
-    padding: 10px;
-}
-
-#content {
-    padding: 10px;
-    margin: 5px;
-    overflow: auto;
+#body-content {
+    margin-left: 10%;
+    width: 900px;
+    padding: 6px;
+    margin-bottom: 10px;
     font-size: 14px;
-    min-height: 600px;
-}
-
-/** work around for ie6 */
-* html #content {
-    height: 600px;
-}
-
-#footer-content {
-    padding: 7px 15px;
-    text-align: right;
-    font-style: italic;
-    font-weight: bold;
-    color: #585858;
-}
-
-#top {
-    height: 40%;
-    padding-left: 50px;
-    padding-right: 50px;
 }
 
 #gallery {
-    height: 750px;
-    padding-left: 10%;
-    padding-bottom: 10px;
-    padding-top: 40px;
-    background:#0f0f0f;
-}
-
-input[type="text"], input[type="password"], textarea {
-    width: 500px;
-}
-
-input[type="submit"] {
-    text-align: center;
-    width: 200px;
-}
-
-.req {
-    vertical-align: top;
-    color: #ccc;
-}
-
-form {
-    padding-left: 50px;
-}
-
-.contact-question {
-    width: 250px;
-    float: left;
-    margin-bottom: 10px;
-}
-
-.contact-answer {
-    margin-bottom: 10px;
-}
-
-.contact-submit {
-    margin-left: 250px;
-}
-
-#contact {
-    min-height: 600px;
-}
-
-/** work around for ie6 */
-* html #contact {
-    height: 600px;
-}
-
-#slides_nav {
+    background: #000;
+    padding: 6px;
     width: 900px;
 }
 
-#slides_nav .slide-prev {
-    margin-top: 20px;
-    float: left;
+#footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:50px;   /* Height of the footer */
+    background:#232323;
 }
 
-#slides_nav .slide-next {
-    margin-top: 20px;
-    float: right;
-}
-
-.slides_container {
-    width:900px;
-    height:600px;
-}
-
-.slides_container div {
-    width:900px;
-    height:600px;
-}
-
-.caption {
-    position: absolute;
-    top: 560px;
-    z-index:500;
-    padding: 0px 20px 5px 20px;
-    background:#000;
-    background:rgba(0,0,0,.5);
-    color:#fff;
-    border-top:1px solid #000;
-    text-shadow:none;
-}
-
-#slides .pagination {
-    margin: 0px;
-    position:relative;
-    background:#222121;
-    width:800px;
-    padding:10px 10px;
-    float:left;
-    margin-left:30px;
-    border-radius:5px;
-    -webkit-border-radius:5px;
-    -moz-border-radius:5px;
-}
-
-#slides .pagination li {
-    float:left;
-    margin:2px 4px;
-    list-style:none;
-}
-
-#slides .pagination li a {
-    display:block;
-    width:100px;
-    margin:1px;
-    float:left;
-    background:#f9f9f9;
-}
-
-#slides .pagination li.current a {
-    border:1px solid #7f7f7f;
-    margin:0;
-}
-
-.postby {
+/* inside the footer */
+#bottom {
     text-align: right;
-    width: 100%;
+    width: 98%;
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    font-size: 12px;
 }
 
-.postpagination {
-    border-bottom: 1px solid #585858;
-}
-
-.previouspost {
-    font-size: 14px;
-    padding-left: 30px;
-    float: left;
-}
-
-.nextpost {
-    font-size: 14px;
-    padding-right: 30px;
-    float: right;
-}
