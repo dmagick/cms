@@ -200,7 +200,7 @@ class post
         foreach ($keywords as $keyword) {
             template::setKeyword('post.show', $keyword, $post[$keyword]);
         }
-        template::setKeyword('header', 'pagetitle', ' - '.$post['subject']);
+        template::setKeyword('header', 'pagetitle', $post['subject']);
 
         $nextpost = '';
         $prevpost = '';
