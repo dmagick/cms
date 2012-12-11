@@ -4,10 +4,10 @@
             ~template::include::post.next~
             </div>
             <br/>
-            <div class="postby">Posted by ~postbyuser~ on ~postdate~</div>
             <br/>
-            <br/>
+            <h2>~subject~</h2>
             ~content~
+            <br/>
             <br/>
 
 
