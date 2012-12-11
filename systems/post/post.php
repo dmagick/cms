@@ -271,38 +271,13 @@ class post
             );
         }
 
-        $code = '
-                <div id="gallery">
-                   <div id="slides">
-                       <div class="slides_container">
-        ';
+        $code = '';
 
         foreach ($images as $image) {
-            $code .= '<div>';
+            $code .= '<div id="gallery">';
             $code .= '<img src="'.$image['url'].'" width="'.$image['width'].'" height="'.$image['height'].'" />';
             $code .= '</div>';
         }
-
-        $code .= '     </div><!-- end slides_container //-->
-                       <div id="slides_nav">
-                            <a href="#" class="slide-prev"><img src="~url::baseurl~/web/images/prev.png" border="0" /></a>
-                            <ul class="pagination">
-        ';
-
-        foreach ($thumbs as $thumb) {
-            $code .= '<li>';
-            $code .= '<a href="#">';
-            $code .= '<img src="'.$thumb['url'].'" width="'.$thumb['width'].'" height="'.$height.'" />';
-            $code .= '</a>';
-            $code .= '</li>';
-        }
-        $code .= '
-                            </ul>
-                            <a href="#" class="slide-next"><img src="~url::baseurl~/web/images/next.png" border="0" /></a>
-                       </div>
-                    </div><!--end slides //-->
-                </div><!-- end gallery//-->
-        ';
 
         return $code;
     }
