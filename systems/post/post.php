@@ -15,6 +15,11 @@
 class post 
 {
 
+    private static $_maxDimensions = array(
+        'width'  => 900,
+        'height' => 600,
+    );
+
     /**
      * Get the latest posts from the database.
      *
@@ -245,26 +250,14 @@ class post
             $width  = $info[0];
             $height = $info[1];
 
-            $url        = str_replace($dataDir, url::getUrl().'/data', $file);
-            $images[$k] = array(
-                'url'    => $url,
-                'width'  => $width,
-                'height' => $height,
-            );
-
-            $file   = $path.'/thumbs/'.basename($file);
-
-            if (is_file($file) === FALSE) {
-                unset($images[$k]);
-                continue;
+            if ($width > self::$_maxDimensions['width']) {
+                $ratio = self::$_maxDimensions['width'] / $width;
+                $width = self::$_maxDimensions['width'];
+                $height = floor($height * $ratio);
             }
 
-            $info   = getimagesize($file);
-            $width  = $info[0];
-            $height = $info[1];
-
             $url        = str_replace($dataDir, url::getUrl().'/data', $file);
-            $thumbs[$k] = array(
+            $images[$k] = array(
                 'url'    => $url,
                 'width'  => $width,
                 'height' => $height,
