@@ -1,4 +1,3 @@
-
 <div id="contact">
     ~contactheader~
     <form method="post" action="~url::baseurl~/contact/submit">
@@ -30,7 +29,7 @@
         <input type="text" name="spamcheck" value="" />
     </div>
     <div class="contact-submit">
-        <input type="submit" value="Send your message">
+        <input type="submit" value="Send!">
     </div>
     </form>
 </div>

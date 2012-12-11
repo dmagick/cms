@@ -1,6 +1,6 @@
 <div id="contact">
-    Thanks for contacting us, we will be in touch as soon as possible.<br/>
-    Here is a copy of the message you sent us:<br/><br/>
+    Thanks for taking the time to contact me, it's very much appreciated!<br/>
+    Here is a copy of the message you sent:<br/><br/>
     From ~email~:<br/>
     ~message~
 </div>
