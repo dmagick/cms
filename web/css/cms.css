@@ -83,3 +83,68 @@ a, a:link, a:active, a:visited {
     font-size: 12px;
 }
 
+.clear {
+    clear: both;
+}
+
+input[type="text"], input[type="password"], textarea {
+    width: 500px;
+}
+
+input[type="submit"] {
+    text-align: center;
+    width: 200px;
+}
+
+.req {
+    vertical-align: top;
+    color: #ccc;
+}
+
+form {
+    padding-left: 50px;
+}
+
+.contact-question {
+    width: 250px;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.contact-answer {
+    margin-bottom: 10px;
+}
+
+.contact-submit {
+    margin-left: 250px;
+}
+
+#contact {
+    min-height: 600px;
+}
+
+/** work around for ie6 */
+* html #contact {
+    height: 600px;
+}
+
+.postby {
+    text-align: right;
+    width: 100%;
+}
+
+.postpagination {
+    border-bottom: 1px solid #585858;
+}
+
+.previouspost {
+    font-size: 14px;
+    padding-left: 30px;
+    float: left;
+}
+
+.nextpost {
+    font-size: 14px;
+    padding-right: 30px;
+    float: right;
+}
