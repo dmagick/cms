@@ -15,6 +15,8 @@
 class post 
 {
 
+    private static $_imageCache = array();
+
     private static $_maxDimensions = array(
         'width'  => 900,
         'height' => 600,
@@ -197,9 +199,18 @@ class post
             'subject',
             'gallery',
         );
+
+        $images = post::getImages($post);
+        foreach ($images as $imagepos => $image) {
+            $imageid                 = $imagepos + 1;
+            $post['image:'.$imageid] = post::displayImage($image);
+            $keywords[]              = 'image:'.$imageid;
+        }
+
         foreach ($keywords as $keyword) {
             template::setKeyword('post.show', $keyword, $post[$keyword]);
         }
+
         template::setKeyword('header', 'pagetitle', $post['subject']);
 
         $nextpost = '';
@@ -221,11 +232,14 @@ class post
         template::serveTemplate('post.show');
     }
 
-    public static function getGallery($post=array())
+    public static function getImages($post=array())
     {
-
         if (empty($post) === TRUE) {
-            return '';
+            return array();
+        }
+
+        if (empty(self::$_imageCache) === FALSE) {
+            return self::$_imageCache;
         }
 
         $dataDir = config::get('datadir');
@@ -233,18 +247,16 @@ class post
         $path = $dataDir.'/post/'.$post['postid'];
 
         if (is_dir($path) === FALSE) {
-            return '';
+            return array();
         }
 
         $files = glob($path.'/*.jpg');
         if (empty($files) === TRUE) {
-            return '';
+            return array();
         }
 
         natsort($files);
 
-        $images = array();
-        $thumbs = array();
         foreach ($files as $k => $file) {
             $info   = getimagesize($file);
             $width  = $info[0];
@@ -264,12 +276,35 @@ class post
             );
         }
 
-        $code = '';
+        self::$_imageCache = $images;
 
+        return $images;
+    }
+
+    public static function displayImage($image=array())
+    {
+        $code  = '<div id="gallery">';
+        $code .= '<img src="'.$image['url'].'" width="'.$image['width'].'" height="'.$image['height'].'" />';
+        $code .= '</div>';
+        return $code;
+    }
+
+    public static function getGallery($post=array())
+    {
+
+        if (empty($post) === TRUE) {
+            return '';
+        }
+
+        $images = post::getImages($post);
+
+        if (empty($images) === TRUE) {
+            return '';
+        }
+
+        $code = '';
         foreach ($images as $image) {
-            $code .= '<div id="gallery">';
-            $code .= '<img src="'.$image['url'].'" width="'.$image['width'].'" height="'.$image['height'].'" />';
-            $code .= '</div>';
+            $code .= self::displayImage($image);
         }
 
         return $code;
