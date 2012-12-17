@@ -29,4 +29,4 @@ loadSystem('admin', 'admin');
 
 admin::display();
 
-/* vim: set expandtab ts=4 sw=4: *//* vim: set expandtab ts=4 sw=4 filetype=php: */
+/* vim: set expandtab ts=4 sw=4: */
