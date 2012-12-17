@@ -56,6 +56,9 @@ class user
             return;
         }
 
+        // Get rid of the header.
+        template::unload('header');
+
         template::serveTemplate('header.empty');
         template::display();
 
