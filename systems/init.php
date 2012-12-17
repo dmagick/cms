@@ -151,6 +151,18 @@ function getIp()
     return trim($ip);
 }
 
+/**
+ * Change a postgres timestamp into a nice date.
+ *
+ * @param string $datetime The timestamp to transform.
+ */
+function niceDate($datetime)
+{
+    $time = strtotime($datetime);
+    $date = date('jS M, Y', $time);
+    return $date;
+}
+
 function logPageTime()
 {
     global $pageStart;

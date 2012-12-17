@@ -37,7 +37,7 @@ class post
         $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
 
         $query   = db::select($sql);
-        $results = db::fetch($query);
+        $results = db::fetchAll($query);
 
         return $results;
     }
@@ -119,18 +119,6 @@ class post
     }
 
     /**
-     * Change a postgres timestamp into a nice date.
-     *
-     * @param string $datetime The timestamp to transform.
-     */
-    public static function niceDate($datetime)
-    {
-        $time = strtotime($datetime);
-        $date = date('jS M, Y', $time);
-        return $date;
-    }
-
-    /**
      * Process an action for the frontend.
      *
      * @param string $action The action to process.
@@ -170,7 +158,12 @@ class post
      */
     public static function showLatestPost()
     {
-        $post = Post::getPosts(1);
+        $post  = array();
+        $posts = Post::getPosts(1);
+        if (empty($posts) === FALSE) {
+            $post = array_shift($posts);
+        }
+
         Post::showPost($post);
     }
 
@@ -191,7 +184,7 @@ class post
         }
 
         $post['gallery']  = post::getGallery($post);
-        $post['postdate'] = post::niceDate($post['postdate']);
+        $post['postdate'] = niceDate($post['postdate']);
         $keywords = array(
             'content',
             'postbyuser',
