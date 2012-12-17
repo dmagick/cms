@@ -39,6 +39,8 @@ class admin
     {
         $page = self::getCurrentPage();
 
+        template::serveTemplate('header');
+
         if (session::has('user') === FALSE) {
             user::setLoginUrl('~url::adminurl~');
             if (session::has('viewPage') === FALSE) {
@@ -52,6 +54,78 @@ class admin
             $page = session::get('viewPage');
             session::remove('viewPage');
         }
+
+        /**
+         * Set the default page title to nothing.
+         * This is used for including extra information (eg the post subject).
+         */
+        template::setKeyword('header', 'pagetitle', '');
+
+        $menuItems = array(
+            '/' => array(
+                'name'     => 'Home',
+                'selected' => TRUE,
+            ),
+            '/adminpost' => array(
+                'name' => 'Posts',
+            ),
+        );
+
+        if (empty($page) === FALSE) {
+            $bits = explode('/', $page);
+
+            // Get rid of the '/admin' bit.
+            array_shift($bits);
+
+            if (empty($bits[0]) === FALSE) {
+                $system = array_shift($bits);
+
+                /**
+                 * Uhoh! Someone's trying to find something that
+                 * doesn't exist.
+                 */
+                if (loadSystem($system, 'admin') === TRUE) {
+                    $url = '/'.$system;
+                    if (isset($menuItems[$url]) === TRUE) {
+                        $menuItems[$url]['selected'] = TRUE;
+                        unset($menuItems['/']['selected']);
+                    }
+
+                    $bits = implode('/', $bits);
+                    if (isValidSystem($system) === TRUE) {
+                        call_user_func_array(array($system, 'process'), array($bits));
+                    }
+                } else {
+                    $url = '';
+                    if (isset($_SERVER['PHP_SELF']) === TRUE) {
+                        $url = $_SERVER['PHP_SELF'];
+                    }
+                    $msg = "Unable to find system '".$system."' for url '".$url."'. page is '".$page."'. server info:".var_export($_SERVER, TRUE);
+                    messagelog::LogMessage($msg);
+                    template::serveTemplate('404');
+                }
+            }
+        } else {
+            // No page or default system?
+            // Fall back to 'index'.
+            template::serveTemplate('header');
+            template::serveTemplate('index');
+        }
+
+        $menu = '';
+        foreach ($menuItems as $url => $info) {
+            $class = '';
+            if (isset($info['selected']) === TRUE && $info['selected'] === TRUE) {
+                $class = 'here';
+            }
+
+            $menu .= '<li class="'.$class.'">';
+            $menu .= '<a href="~url::adminurl~'.$url.'">'.$info['name'].'</a>';
+            $menu .= '</li>';
+            $menu .= "\n";
+        }
+
+        template::setKeyword('header', 'menu', $menu);
 
         template::serveTemplate('footer');
         template::display();
