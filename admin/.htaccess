@@ -2,5 +2,9 @@
     SetHandler application/x-httpd-php
 </Files>
 
+<Files adminpost>
+    SetHandler application/x-httpd-php
+</Files>
+
 ErrorDocument 404 /
 
