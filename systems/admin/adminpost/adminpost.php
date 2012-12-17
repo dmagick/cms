@@ -75,7 +75,7 @@ class adminpost
 
         template::serveTemplate('post.list.header');
         foreach ($list as $k => $details) {
-            $post['postdate'] = niceDate($details['postdate']);
+            $details['postdate'] = niceDate($details['postdate']);
             $keywords = array(
                 'postid',
                 'postedby',
