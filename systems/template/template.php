@@ -199,10 +199,21 @@ class Template
             return $content;
         }
 
+        if (empty(self::$_keywords[$templateName]) === TRUE) {
+            return $content;
+        }
+
+        // Keywords are kept as an array - once for each time the template
+        // is in the stack.
+        // So if we add a template 3 times to the stack, we need values
+        // for displaying the template 3 times.
         $keywords = array_keys(self::$_keywords[$templateName]);
-        $values   = array_values(self::$_keywords[$templateName]);
+        $values   = array();
+        foreach ($keywords as $keyword) {
+            $values[$keyword] = array_shift(self::$_keywords[$templateName][$keyword]);
+        }
+
         $content  = str_replace($keywords, $values, $content);
-        unset(self::$_keywords[$templateName]);
         return $content;
     }
 
@@ -304,29 +315,10 @@ class Template
         if (isset(self::$_keywords[$template]) === FALSE) {
             self::$_keywords[$template] = array();
         }
-        self::$_keywords[$template]['~'.$keyword.'~'] = $value;
-    }
-
-    /**
-     * Get a keyword for a particular template and return it.
-     *
-     * @param string $template The template to get the keyword for.
-     * @param string $keyword  The keyword you want to return.
-     *
-     * @return Returns the keyword if it exists, otherwise returns NULL.
-     *
-     * @static
-     */
-    public static function getKeyword($template, $keyword)
-    {
-        if (isset(self::$_keywords[$template]) === FALSE) {
-            return NULL;
-        }
         if (isset(self::$_keywords[$template]['~'.$keyword.'~']) === FALSE) {
-            return NULL;
+            self::$_keywords[$template]['~'.$keyword.'~'] = array();
         }
-
-        return self::$_keywords[$template]['~'.$keyword.'~'];
+        self::$_keywords[$template]['~'.$keyword.'~'][] = $value;
     }
 
     /**
