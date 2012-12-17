@@ -139,6 +139,20 @@ class post
                     Post::showLatestPost();
                 } else {
                     list($date, $subject) = explode('/', $action);
+
+                    // If we're coming from the admin area, the url will be
+                    // preview/$postid
+                    // so our 'date' will be 'preview' and the 'subject'
+                    // will be the postid.
+                    if ($date === 'preview') {
+                        $postid = $subject;
+                        if (session::has('user') === TRUE) {
+                            $post = self::getPostById($subject);
+                            Post::showPost($post);
+                            break;
+                        }
+                    }
+
                     $post = Post::getPostByDate($date, $subject);
                     if (empty($post) === FALSE) {
                         Post::showPost($post);
@@ -301,6 +315,40 @@ class post
         }
 
         return $code;
+    }
+
+    /**
+     * Get a post by id. We need this when we are previewing a post from the admin
+     * area.
+     * Since we don't know whether it's under construction or live, we check both
+     * the queue table and the posts table for the id.
+     */
+    private static function getPostById($postid=0)
+    {
+        $sql  = "SELECT postid, subject, content, postdate, modifieddate, postbyuser";
+        $sql .= " FROM ";
+        $sql .= "(";
+        $sql .= "(";
+        $sql .= " SELECT p.postid, p.subject, p.content, p.postdate, p.modifieddate, u.username AS postbyuser";
+        $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
+        $sql .= " ON (p.postby=u.userid)";
+        $sql .= " WHERE p.postid=:livepostid";
+        $sql .= ")";
+        $sql .= " UNION ALL ";
+        $sql .= "(";
+        $sql .= " SELECT q.postid, q.subject, q.content, q.postdate, q.modifieddate, u.username AS postbyuser";
+        $sql .= " FROM ".db::getPrefix()."posts_queue q INNER JOIN ".db::getPrefix()."users u";
+        $sql .= " ON (q.postby=u.userid)";
+        $sql .= " WHERE q.postid=:ucpostid";
+        $sql .= ")";
+        $sql .= ") as postlist";
+        $sql .= " WHERE postid=:postid";
+
+        $query   = db::select($sql, array(':livepostid' => $postid, ':ucpostid' => $postid, ':postid' => $postid));
+        $results = db::fetchAll($query);
+
+        $entry = array_shift($results);
+        return $entry;
     }
 
 }
