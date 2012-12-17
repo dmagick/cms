@@ -110,9 +110,7 @@ class session
      */
     public static function get($var)
     {
-        if (self::$_started === FALSE) {
-            throw new Exception("session hasn't been started yet");
-        }
+        session::start();
 
         if (isset($_SESSION[$var]) === FALSE) {
             throw new Exception("$var has not been set in the session");
@@ -131,9 +129,7 @@ class session
      */
     public static function has($var)
     {
-        if (self::$_started === FALSE) {
-            throw new Exception("session hasn't been started yet");
-        }
+        session::start();
 
         if (isset($_SESSION[$var]) === TRUE) {
             return TRUE;
@@ -151,9 +147,7 @@ class session
      */
     public static function remove($var)
     {
-        if (self::$_started === FALSE) {
-            throw new Exception("session hasn't been started yet");
-        }
+        session::start();
 
         if (self::has($var) === FALSE) {
             throw new Exception("$var has not been set in the session");
