@@ -10,7 +10,9 @@ $(function() {
                 status: $('#status-' + postid + ':checked').val()
             },
         }).done(function( msg ) {
-            alert(msg);
+            $('#t-pm-details-' + postid).html(msg);
+            $('#t-pm-' + postid).show('fast').delay(1000);
+            $('#t-pm-' + postid).hide('fast');
         });
     });
 });
