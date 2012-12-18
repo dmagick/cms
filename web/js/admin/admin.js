@@ -11,7 +11,7 @@ $(function() {
             },
         }).done(function( msg ) {
             $('#t-pm-details-' + postid).html(msg);
-            $('#t-pm-' + postid).show('fast').delay(1000);
+            $('#t-pm-' + postid).show('fast').delay(2000);
             $('#t-pm-' + postid).hide('fast');
         });
     });
