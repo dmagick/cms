@@ -43,6 +43,26 @@ class Template
      */
     private static $_directories = array();
 
+    private static $_baseDir = array();
+
+    /**
+     * Set the base directory for a directory type.
+     * This is needed so when we are in the admin area, templates
+     * can still be loaded from the base template folder (for flash messages).
+     *
+     * Also calls setDir() for the dir and type.
+     */
+    public static function setBaseDir($dir, $type='template')
+    {
+        if (is_dir($dir) === FALSE) {
+            throw new Exception("Template dir doesn't exist");
+        }
+
+        self::$_baseDir[$type] = $dir;
+
+        self::setDir($dir, $type);
+    }
+
     /**
      * Set the directory where to get templates from.
      * This is generally done at the top of the main index script.
@@ -106,7 +126,18 @@ class Template
      */
     public static function getTemplate($templateName=NULL)
     {
-        $file = self::getDir('template').'/'.$templateName.'.tpl';
+        $templateDir = self::getDir('template');
+        $file        = $templateDir.'/'.$templateName.'.tpl';
+
+        // If we didn't find it in the current template folder,
+        // check the base template folder to see if it's there.
+        if (is_file($file) === FALSE) {
+            if ($templateDir !== self::$_baseDir['template']) {
+                $templateDir = self::$_baseDir['template'];
+                $file        = $templateDir.'/'.$templateName.'.tpl';
+            }
+        }
+
         if (is_file($file) === FALSE) {
             throw new Exception("Template ".$templateName." doesn't exist");
         }
