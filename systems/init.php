@@ -184,7 +184,7 @@ foreach ($requiredSystems as $system) {
     require $basedir.'/systems/'.$system.'/'.$system.'.php';
 }
 
-template::setDir($basedir.'/templates', 'template');
+template::setBaseDir($basedir.'/templates', 'template');
 url::setUrl($config['url']);
 
 config::set($config);
