@@ -1,0 +1,16 @@
+input[type="text"], input[type="password"], textarea {
+    width: 250px;
+}
+
+textarea {
+    height: 100px;
+}
+
+td {
+    vertical-align: top;
+}
+
+#body-content {
+    width: 1000px;
+    margin-left: 5%;
+}
