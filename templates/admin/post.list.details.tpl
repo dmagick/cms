@@ -3,6 +3,9 @@
     </tr>
     <tr id="t-p-~postid~">
         <td>
+            ~postid~
+        </td>
+        <td>
             <input type="text" name="subject[~postid~]" id="subject-~postid~" value="~subject~">
         </td>
         <td>
@@ -19,9 +22,9 @@
             <input type="radio" name="status[~postid~]" id="status-~postid~" value="uc"~ucchecked~>U/C<br/>
         </td>
         <td>
-            <input type="button" id="~postid~" value="Update" /><br/>
             <a href="~url::baseurl~/post/preview/~postid~" target="_blank">Preview</a><br/>
-            <a href="~url::adminurl~/adminpost/delete/~postid~">Del</a>
+            <input type="button" id="~postid~" class="post-update-button" value="Update" /><br/>
+            <input type="button" id="~postid~" class="post-delete-button" value="Delete" /><br/>
         </td>
     </tr>
 

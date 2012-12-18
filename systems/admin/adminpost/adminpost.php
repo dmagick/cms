@@ -34,6 +34,28 @@ class adminpost
 
         switch ($action)
         {
+            case 'delete':
+                template::clearStack();
+                $result = self::_deletePost($info);
+                if ($result === TRUE) {
+                    session::setFlashMessage('Post deleted', 'success');
+                } else {
+                    session::setFlashMessage('Post not deleted', 'error');
+                }
+                exit;
+                break;
+
+            case 'add':
+                template::clearStack();
+                $result = self::_addPost();
+                if ($result === TRUE) {
+                    session::setFlashMessage('Post added', 'success');
+                } else {
+                    session::setFlashMessage('Post not added', 'error');
+                }
+                exit;
+                break;
+
             case 'update':
                 template::clearStack();
                 $result = self::_updatePost($info);
@@ -52,11 +74,92 @@ class adminpost
         }
     }
 
+    private static function _deletePost($postid)
+    {
+        db::beginTransaction();
+
+        $sqlDelete  = 'DELETE FROM ~tablename~ WHERE postid=:postid';
+        $deleteData = array(
+            ':postid' => $postid,
+        );
+
+        $deleted = 0;
+        foreach (array('posts', 'posts_queue') AS $table) {
+            $deleted += db::execute(
+                str_replace('~tablename~', db::getPrefix().$table, $sqlDelete),
+                $deleteData
+            );
+        }
+
+        if ($deleted === 0) {
+            db::rollbackTransaction();
+            return FALSE;
+        }
+
+        // Clean up images from the data directories as well.
+        $dataDir = config::get('datadir');
+        $path    = $dataDir.'/post/'.$postid;
+
+        if (is_dir($path) === TRUE) {
+            $files = glob($path.'/*.jpg');
+            if (empty($files) === FALSE) {
+                foreach ($files as $file) {
+                    unlink($file);
+                }
+            }
+            rmdir($path);
+        }
+
+        db::commitTransaction();
+        return TRUE;
+    }
+
+    private static function _addPost()
+    {
+        db::beginTransaction();
+
+        $postby  = session::get('user');
+        $content = $_POST['content'];
+        $subject = $_POST['subject'];
+
+        $postdate = date('Y-m-d H:i:0');
+        if (empty($_POST['postdate']) === FALSE) {
+            $postdate = $_POST['postdate'];
+        }
+
+        $postidQuery = db::select("SELECT nextval('".db::getPrefix()."posts_postid') AS postid");
+        $postidRow   = db::fetch($postidQuery);
+        $postid      = $postidRow['postid'];
+
+        $sqlInsert  = 'INSERT INTO '.db::getPrefix().'posts_queue';
+        $sqlInsert .= ' (postid, subject, content, postdate, modifieddate, postby)';
+        $sqlInsert .= ' VALUES ';
+        $sqlInsert .= ' (:postid, :subject, :content, :postdate, NOW(), :postby)';
+
+        $insertData = array(
+            ':subject'  => $subject,
+            ':content'  => $content,
+            ':postdate' => $postdate,
+            ':postid'   => $postid,
+            ':postby'   => $postby,
+        );
+
+        $inserted = db::execute($sqlInsert, $insertData);
+
+        if ($inserted === 0) {
+            db::rollbackTransaction();
+            return FALSE;
+        }
+
+        db::commitTransaction();
+        return TRUE;
+    }
+
     private static function _updatePost($postid)
     {
         db::beginTransaction();
 
-        $status = $_POST['status'];
+        $status  = $_POST['status'];
         $content = $_POST['content'];
         $subject = $_POST['subject'];
 

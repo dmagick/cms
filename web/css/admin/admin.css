@@ -14,3 +14,11 @@ td {
     width: 1000px;
     margin-left: 5%;
 }
+
+#post-add-link {
+    cursor: pointer;
+}
+
+input[type="button"] {
+    width: 70px;
+}
