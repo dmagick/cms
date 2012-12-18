@@ -188,7 +188,9 @@ class db
             $msg .= 'Info:'.var_export($query->errorInfo(), TRUE);
             messageLog::LogMessage($msg);
         }
-        return $result;
+
+        $rowsAffected = $query->rowCount();
+        return $rowsAffected;
     }
 
     /**
