@@ -347,6 +347,23 @@ class Template
             }
         }
     }
+
+    /**
+     * Clear out the entire template stack and all keywords.
+     * Used by adminpost ajax requests so it can return clean, empty
+     * data to jquery.
+     *
+     * @return void
+     */
+    public static function clearStack()
+    {
+        foreach (self::$_templateStack as $template) {
+            if (isset(self::$_keywords[$template]) === TRUE) {
+                unset(self::$_keywords[$template]);
+            }
+        }
+        self::$_templateStack = array();
+    }
 }
 
 /* vim: set expandtab ts=4 sw=4: */
