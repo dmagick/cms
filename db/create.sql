@@ -32,8 +32,7 @@ create table cms_posts (
 );
 
 create table cms_posts_queue (
-    queueid int not null primary key,
-    postid int,
+    postid int not null primary key,
     subject text,
     content text,
     postdate timestamp with time zone,
@@ -42,7 +41,6 @@ create table cms_posts_queue (
 );
 
 create sequence cms_posts_postid;
-create sequence cms_posts_queue_queueid;
 
 create table cms_stats (
     statid serial not null primary key,
