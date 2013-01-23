@@ -45,7 +45,7 @@ create sequence cms_posts_postid;
 
 create table cms_favourites (
     favouriteid int not null primary key,
-    postid int references cms_posts(postid),
+    postid int,
     imagename text,
     showorder int
 );
