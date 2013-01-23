@@ -3,11 +3,16 @@
 require dirname(dirname(__FILE__)).'/init.php';
 
 // These are the only systems we need in the admin area.
-$systems = array(
+// However, the frontend systems are still valid, so we don't
+// have to either globalise specific functions, or copy/paste them.
+$adminSystems = array(
     'admin',
     'adminpost',
     'user',
 );
+
+// Merge the frontend system list with the admin list.
+$systems = array_merge($systems, $adminSystems);
 
 // Use different templates for the admin area.
 template::setDir($basedir.'/templates/admin', 'template');
