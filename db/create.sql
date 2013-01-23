@@ -49,6 +49,7 @@ create table cms_favourites (
     imagename text,
     showorder int
 );
+create index cms_favourites_postid on cms_favourites(postid);
 
 create sequence cms_favourites_favouriteid;
 
