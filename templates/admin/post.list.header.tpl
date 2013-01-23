@@ -2,7 +2,7 @@
 <form method="post" action="~url::adminurl~/adminpost/update">
     <table border="1" cellspacing="5" cellpadding="5" width="100%">
         <tr>
-            <th>
+            <th width="5px">
                 ID
             </th>
             <th>
@@ -17,8 +17,11 @@
             <th>
                 Posted By
             </th>
-            <th>
+            <th width="60px">
                 Status
+            </th>
+            <th>
+                Images
             </th>
             <th>
                 Action

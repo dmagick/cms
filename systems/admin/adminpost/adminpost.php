@@ -290,6 +290,8 @@ class adminpost
             return;
         }
 
+        loadSystem('post');
+
         template::serveTemplate('post.list.header');
         foreach ($list as $k => $details) {
             $details['postdate'] = niceDate($details['postdate']);
@@ -304,7 +306,21 @@ class adminpost
                 $details['livechecked'] = ' CHECKED';
             }
 
+            $images    = post::getImages($details);
+            $imageList = '';
+            foreach ($images as $k => $imageInfo) {
+                $imageList .= ($k + 1).'.&nbsp;';
+                $imageList .= '<a href="'.$imageInfo['url'].'" target="_blank">';
+                $imageList .= substr(strrchr($imageInfo['url'], '/'), 1);
+                $imageList .= '</a>';
+                $imageList .= '<br/>';
+            }
+            $imageList = rtrim($imageList, '<br/>');
+
+            $details['imagelist'] = $imageList;
+
             $keywords = array(
+                'imagelist',
                 'postid',
                 'postedby',
                 'postdate',
