@@ -6,6 +6,10 @@
     SetHandler application/x-httpd-php
 </Files>
 
+<Files favourites>
+    SetHandler application/x-httpd-php
+</Files>
+
 <Files post>
     SetHandler application/x-httpd-php
 </Files>

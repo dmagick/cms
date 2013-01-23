@@ -60,6 +60,7 @@ $requiredSystems = array(
 $systems = array(
     'about',
     'contact',
+    'favourites',
     'post',
 );
 

@@ -1,10 +1,11 @@
+drop sequence cms_favourites_favouriteid;
 drop sequence cms_posts_postid;
-drop sequence cms_posts_queue_queueid;
 drop table cms_posts;
 drop table cms_posts_queue;
 drop table cms_users;
 drop table cms_user_login_locks;
 drop table cms_stats;
+drop table cms_favourites;
 
 create table cms_users (
     userid serial primary key,
@@ -41,6 +42,15 @@ create table cms_posts_queue (
 );
 
 create sequence cms_posts_postid;
+
+create table cms_favourites (
+    favouriteid int not null primary key,
+    postid int references cms_posts(postid),
+    imagename text,
+    showorder int
+);
+
+create sequence cms_favourites_favouriteid;
 
 create table cms_stats (
     statid serial not null primary key,
