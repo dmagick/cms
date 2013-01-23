@@ -250,8 +250,7 @@ class post
         }
 
         $dataDir = config::get('datadir');
-
-        $path = $dataDir.'/post/'.$post['postid'];
+        $path    = $dataDir.'/post/'.$post['postid'];
 
         if (is_dir($path) === FALSE) {
             return array();
@@ -264,7 +263,34 @@ class post
 
         natsort($files);
 
+        $images = post::getImageUrls($files);
+
+        self::$_imageCache = $images;
+
+        return $images;
+    }
+
+    public static function getImageUrls($files=array())
+    {
+        $images  = array();
+        if (empty($files) === TRUE) {
+            return $images;
+        }
+
+        $dataDir = config::get('datadir');
+        $dataUrl = url::getUrl().'/data';
+
         foreach ($files as $k => $file) {
+            // Make sure it's an absolute path.
+            if (realpath($file) !== $file) {
+                continue;
+            }
+
+            // Make sure the path starts with the data dir.
+            if (strpos($file, $dataDir) !== 0) {
+                continue;
+            }
+
             $info   = getimagesize($file);
             $width  = $info[0];
             $height = $info[1];
@@ -275,7 +301,7 @@ class post
                 $height = floor($height * $ratio);
             }
 
-            $url        = str_replace($dataDir, url::getUrl().'/data', $file);
+            $url        = str_replace($dataDir, $dataUrl, $file);
             $images[$k] = array(
                 'url'    => $url,
                 'width'  => $width,
@@ -283,14 +309,18 @@ class post
             );
         }
 
-        self::$_imageCache = $images;
-
         return $images;
+
     }
 
-    public static function displayImage($image=array())
+    public static function displayImage($image=array(), $ownGallery=TRUE)
     {
-        $code  = '<div id="gallery">';
+        if ($ownGallery === TRUE) {
+            $code  = '<div id="gallery">';
+        } else {
+            $code  = '<div>';
+        }
+
         $code .= '<img src="'.$image['url'].'" width="'.$image['width'].'" height="'.$image['height'].'" />';
         $code .= '</div>';
         return $code;
