@@ -32,10 +32,16 @@ class adminpost
             $info   = implode('/', $bits);
         }
 
+        // The empty action means 'list'.
+        // Anything else is an ajax request, so
+        // we need to clear the stack.
+        if (empty($action) === FALSE) {
+            template::clearStack();
+        }
+
         switch ($action)
         {
             case 'delete':
-                template::clearStack();
                 $result = self::_deletePost($info);
                 if ($result === TRUE) {
                     session::setFlashMessage('Post deleted', 'success');
@@ -46,7 +52,6 @@ class adminpost
                 break;
 
             case 'add':
-                template::clearStack();
                 $result = self::_addPost();
                 if ($result === TRUE) {
                     session::setFlashMessage('Post added', 'success');
@@ -57,7 +62,6 @@ class adminpost
                 break;
 
             case 'update':
-                template::clearStack();
                 $result = self::_updatePost($info);
                 if ($result === TRUE) {
                     echo 'Post updated';
@@ -67,7 +71,27 @@ class adminpost
                 exit;
                 break;
 
-            case '':
+            case 'favedelete':
+                $result = self::_faveDelete($info);
+                if ($result === TRUE) {
+                    echo 'Favourite deleted';
+                } else {
+                    echo 'Something went wrong';
+                }
+                exit;
+                break;
+
+            case 'faveadd':
+                $result = self::_faveAdd($info);
+                if ($result === TRUE) {
+                    echo 'Favourite added';
+                } else {
+                    echo 'Something went wrong';
+                }
+                exit;
+                break;
+
+            default:
                 self::_listPosts();
             break;
 
@@ -283,7 +307,8 @@ class adminpost
     {
         template::serveTemplate('post.list.new');
 
-        $list = self::_getPosts();
+        $list  = self::_getPosts();
+        $faves = self::_getFavourites();
 
         if (empty($list) === TRUE) {
             template::serveTemplate('post.list.empty');
@@ -309,9 +334,21 @@ class adminpost
             $images    = post::getImages($details);
             $imageList = '';
             foreach ($images as $k => $imageInfo) {
+                $imageName = substr(strrchr($imageInfo['url'], '/'), 1);
+
+                $icon         = 'nofave';
+                $iconOpposite = 'fave';
+                if (isset($faves[$details['postid']]) === TRUE) {
+                    if (in_array($imageName, $faves[$details['postid']]) === TRUE) {
+                        $icon         = 'fave';
+                        $iconOpposite = 'nofave';
+                    }
+                }
+
+                $imageList .= '<img class="fave-'.$icon.'" id="'.$details['postid'].'~'.htmlentities($imageName).'" src="~url::baseurl~/web/images/admin/fave-'.$icon.'.png" border="0" />';
                 $imageList .= ($k + 1).'.&nbsp;';
                 $imageList .= '<a href="'.$imageInfo['url'].'" target="_blank">';
-                $imageList .= substr(strrchr($imageInfo['url'], '/'), 1);
+                $imageList .= $imageName;
                 $imageList .= '</a>';
                 $imageList .= '<br/>';
             }
@@ -338,6 +375,83 @@ class adminpost
         }
 
         template::serveTemplate('post.list.footer');
+    }
+
+    private function _getFavourites()
+    {
+        $sql     = 'SELECT postid, imagename FROM '.db::getPrefix().'favourites';
+        $query   = db::select($sql);
+        $results = db::fetchAll($query);
+
+        $favourites = array();
+        foreach ($results as $k => $info) {
+            $postid = $info['postid'];
+            if (isset($favourites[$postid]) === FALSE) {
+                $favourites[$postid] = array();
+            }
+            $favourites[$postid][] = $info['imagename'];
+        }
+
+        return $favourites;
+    }
+
+    private function _faveAdd($info)
+    {
+        if (strpos($info, '~') === FALSE) {
+            return FALSE;
+        }
+
+        list($postid, $image) = explode('~', $info);
+
+        db::beginTransaction();
+
+        $query  = 'INSERT INTO '.db::getPrefix().'favourites (postid, imagename)';
+        $query .= ' VALUES ';
+        $query .= '(:postid, :imagename)';
+
+        $bindVars = array(
+            ':postid'    => $postid,
+            ':imagename' => $image,
+        );
+
+        $result = db::execute($query, $bindVars);
+
+        if ($result === 0) {
+            db::rollbackTransaction();
+            return FALSE;
+        }
+
+        db::commitTransaction();
+        return TRUE;
+    }
+
+    private function _faveDelete($info)
+    {
+        if (strpos($info, '~') === FALSE) {
+            return FALSE;
+        }
+
+        list($postid, $image) = explode('~', $info);
+
+        db::beginTransaction();
+
+        $query  = 'DELETE FROM '.db::getPrefix().'favourites';
+        $query .= ' WHERE postid=:postid AND imagename=:imagename';
+
+        $bindVars = array(
+            ':postid'    => $postid,
+            ':imagename' => $image,
+        );
+
+        $result = db::execute($query, $bindVars);
+
+        if ($result === 0) {
+            db::rollbackTransaction();
+            return FALSE;
+        }
+
+        db::commitTransaction();
+        return TRUE;
     }
 
 }

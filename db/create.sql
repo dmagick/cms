@@ -44,14 +44,11 @@ create table cms_posts_queue (
 create sequence cms_posts_postid;
 
 create table cms_favourites (
-    favouriteid int not null primary key,
     postid int,
     imagename text,
     showorder int
 );
-create index cms_favourites_postid on cms_favourites(postid);
-
-create sequence cms_favourites_favouriteid;
+alter table cms_favourites add constraint cms_favourites_pkey primary key (postid, imagename);
 
 create table cms_stats (
     statid serial not null primary key,

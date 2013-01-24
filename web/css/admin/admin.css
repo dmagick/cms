@@ -23,3 +23,7 @@ input[type="button"] {
     width: 60px;
 }
 
+.fave-fave, .fave-nofave {
+      width: 20px;
+}
+

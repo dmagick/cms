@@ -45,5 +45,39 @@ $(function() {
         });
     });
 
+    $(".fave-fave").click(function() {
+        imageinfo = this.id;
+        var myArray = imageinfo.split('~');
+        postid = myArray[0];
+        var response = $.ajax({
+            type: 'POST',
+            url: 'adminpost/favedelete/' + imageinfo,
+            data: {
+            },
+        }).done(function( msg ) {
+            $('#t-pm-details-' + postid).html(msg);
+            $('#t-pm-' + postid).show('fast').delay(2000);
+            $('#t-pm-' + postid).hide('fast');
+            location.reload();
+        });
+    });
+
+    $(".fave-nofave").click(function() {
+        imageinfo = this.id;
+        var myArray = imageinfo.split('~');
+        postid = myArray[0];
+        var response = $.ajax({
+            type: 'POST',
+            url: 'adminpost/faveadd/' + imageinfo,
+            data: {
+            },
+        }).done(function( msg ) {
+            $('#t-pm-details-' + postid).html(msg);
+            $('#t-pm-' + postid).show('fast').delay(2000);
+            $('#t-pm-' + postid).hide('fast');
+            location.reload();
+        });
+    });
+
 });
 
