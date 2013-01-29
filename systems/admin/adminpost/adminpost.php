@@ -333,7 +333,22 @@ class adminpost
 
             $images    = post::getImages($details);
             $imageList = '';
-            foreach ($images as $k => $imageInfo) {
+            $imgCount  = 1;
+
+            // Don't use the key of the array as the image counter.
+            // natsort() (used in post::getImages()) doesn't reset
+            // the keys, so you end up with an array like
+            // 0 = 1.jpg
+            // 9 = 10.jpg
+            // 2 = 2.jpg
+            // ...
+            // so your display would be
+            // 1 = 1.jpg
+            // 10 = 2.jpg
+            // 11 = 3.jpg
+            // ..
+            // 2 = 10.jpg
+            foreach ($images as $imageInfo) {
                 $imageName = substr(strrchr($imageInfo['url'], '/'), 1);
 
                 $icon         = 'nofave';
@@ -346,11 +361,12 @@ class adminpost
                 }
 
                 $imageList .= '<img class="fave-'.$icon.'" id="'.$details['postid'].'~'.htmlentities($imageName).'" src="~url::baseurl~/web/images/admin/fave-'.$icon.'.png" border="0" />';
-                $imageList .= ($k + 1).'.&nbsp;';
+                $imageList .= $imgCount.'.&nbsp;';
                 $imageList .= '<a href="'.$imageInfo['url'].'" target="_blank">';
                 $imageList .= $imageName;
                 $imageList .= '</a>';
                 $imageList .= '<br/>';
+                $imgCount++;
             }
             $imageList = rtrim($imageList, '<br/>');
 
