@@ -8,6 +8,7 @@ require dirname(dirname(__FILE__)).'/init.php';
 $adminSystems = array(
     'admin',
     'adminpost',
+    'adminstats',
     'user',
 );
 

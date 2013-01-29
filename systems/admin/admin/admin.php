@@ -69,6 +69,9 @@ class admin
             '/adminpost' => array(
                 'name' => 'Posts',
             ),
+            '/adminstats' => array(
+                'name' => 'Stats',
+            ),
         );
 
         if (empty($page) === FALSE) {

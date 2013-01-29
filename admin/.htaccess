@@ -6,5 +6,9 @@
     SetHandler application/x-httpd-php
 </Files>
 
+<Files adminstats>
+    SetHandler application/x-httpd-php
+</Files>
+
 ErrorDocument 404 /
 
