@@ -15,6 +15,10 @@
 class post 
 {
 
+    /**
+     * Cache images per post so we don't hit the f/s each time we
+     * look at the same post.
+     */
     private static $_imageCache = array();
 
     private static $_maxDimensions = array(
@@ -245,8 +249,12 @@ class post
             return array();
         }
 
-        if (empty(self::$_imageCache) === FALSE) {
-            return self::$_imageCache;
+        if (isset($post['postid']) === FALSE || $post['postid'] <= 0) {
+            return array();
+        }
+
+        if (empty(self::$_imageCache[$post['postid']]) === FALSE) {
+            return self::$_imageCache[$post['postid']];
         }
 
         $dataDir = config::get('datadir');
@@ -265,7 +273,7 @@ class post
 
         $images = post::getImageUrls($files);
 
-        self::$_imageCache = $images;
+        self::$_imageCache[$post['postid']] = $images;
 
         return $images;
     }
