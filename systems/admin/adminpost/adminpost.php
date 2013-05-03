@@ -285,17 +285,17 @@ class adminpost
         $sql .= " SELECT p.postid, p.subject, p.content, p.postdate, u.username AS postedby, 'live' as status";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
-        $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
+        $sql .= " ORDER BY postid DESC LIMIT ".$limit;
         $sql .= ")";
         $sql .= " UNION ALL ";
         $sql .= "(";
         $sql .= "SELECT q.postid, q.subject, q.content, q.postdate, u.username AS postedby, 'uc' as status";
         $sql .= " FROM ".db::getPrefix()."posts_queue q INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (q.postby=u.userid)";
-        $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
+        $sql .= " ORDER BY postid DESC LIMIT ".$limit;
         $sql .= ")";
         $sql .= ") as postlist";
-        $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
+        $sql .= " ORDER BY postid DESC LIMIT ".$limit;
 
         $query   = db::select($sql);
         $results = db::fetchAll($query);
