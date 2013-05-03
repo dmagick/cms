@@ -38,7 +38,7 @@ class post
         $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, p.modifieddate, u.username AS postbyuser";
         $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
         $sql .= " ON (p.postby=u.userid)";
-        $sql .= " ORDER BY postdate DESC LIMIT ".$limit;
+        $sql .= " ORDER BY p.postid DESC LIMIT ".$limit;
 
         $query   = db::select($sql);
         $results = db::fetchAll($query);
