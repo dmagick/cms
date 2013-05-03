@@ -320,7 +320,7 @@ class adminpost
         template::serveTemplate('post.list.header');
         foreach ($list as $k => $details) {
             $details['postdate'] = niceDate($details['postdate']);
-            $details['content']  = htmlspecialchars($details['content']);
+            $details['content']  = htmlspecialchars(stripslashes($details['content']));
 
             $details['livechecked'] = '';
             $details['ucchecked']   = '';
