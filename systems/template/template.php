@@ -202,6 +202,18 @@ class Template
         return $content;
     }
 
+    private static function processIncludeTemplates($content)
+    {
+        preg_match_all('/~template::(.*?)~/', $content, $matches);
+        if (empty($matches[1]) === FALSE) {
+            foreach ($matches[1] as $mpos => $match) {
+                $result = self::processTemplateAction($match);
+                $content = str_replace($matches[0][$mpos], $result, $content);
+            }
+        }
+        return $content;
+    }
+
     /**
      * Process keywords for a template if there are any to be processed.
      * Returns the content with keywords replaced.
@@ -218,13 +230,7 @@ class Template
      */
     private static function processKeywords($content, $templateName)
     {
-        preg_match_all('/~template::(.*?)~/', $content, $matches);
-        if (empty($matches[1]) === FALSE) {
-            foreach ($matches[1] as $mpos => $match) {
-                $result = self::processTemplateAction($match);
-                $content = str_replace($matches[0][$mpos], $result, $content);
-            }
-        }
+        $content = self::processIncludeTemplates($content);
 
         if (isset(self::$_keywords[$templateName]) === FALSE) {
             return $content;
@@ -244,7 +250,10 @@ class Template
             $values[$keyword] = array_shift(self::$_keywords[$templateName][$keyword]);
         }
 
-        $content  = str_replace($keywords, $values, $content);
+        $content = str_replace($keywords, $values, $content);
+
+        // In case any keywords included other templates, re-process them.
+        $content = self::processIncludeTemplates($content);
         return $content;
     }
 
