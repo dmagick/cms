@@ -49,7 +49,7 @@ class frontend
 
         $menuItems = array(
             '/' => array(
-                'name'     => 'Home',
+                'name'     => 'Latest',
                 'selected' => TRUE,
             ),
             '/about' => array(
