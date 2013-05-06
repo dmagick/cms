@@ -1,5 +1,7 @@
-Hi and welcome to my photo site!<br/>
-My name's Chris and I love getting out as much as possible to take photos around Sydney and when possible, other parts of Australia. A lot of my pictures are taken on weekends when I can get up early (before my kids are awake!) and heading down to a beach close to where I live. Even though I go to the same areas all the time they are always different.<br/><br/>
+<h3>Hi and welcome!</h3>
 
-If you have any questions or comments, you can either email me - chris@splashofphotography.com, or use the <a href="~url::baseurl~/contact">contact form</a>, I would love to hear from you!
+This website is here to show images of Sydney, Australia. I usually end up at one of the many beaches around Sydney's east coast, wondering what the new day will bring. It's always different and interesting to watch and try to capture what I see. I hope you enjoy looking at the photos and I'd love to hear from you. You can email me directly - chris@splashofphotography.com or use the <a href="~url::baseurl~/contact">contact form</a>.<br/><br/>
+
+Cheers!<br/>
+Chris.
 
