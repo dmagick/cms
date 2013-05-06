@@ -1,7 +1,7 @@
             <div class="postpagination">
-            ~template::include::post.previous~
+            ~post.previous.link~
             &nbsp;
-            ~template::include::post.next~
+            ~post.next.link~
             </div>
             <h2>~subject~</h2>
             ~content~

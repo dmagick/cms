@@ -224,21 +224,27 @@ class post
 
         template::setKeyword('header', 'pagetitle', stripslashes($post['subject']));
 
-        $nextpost = '';
-        $prevpost = '';
+        $nextpost = '~template::include::post.next.empty~';
+        $prevpost = '~template::include::post.previous.empty~';
 
         $nextandprev = Post::getNextAndPrevPost($post['postid']);
         foreach ($nextandprev as $otherPost) {
             $url = Post::safeUrl($otherPost['postdate'], $otherPost['subject']);
-            if ($otherPost['pos'] === 'previous') {
-                $prevpost = $url;
-            } else {
-                $nextpost = $url;
+
+            switch ($otherPost['pos']) {
+            case 'next':
+                $nextpost = '~template::include::post.next~';
+                template::setKeyword('post.next', 'nextpost', $url);
+                break;
+            case 'previous':
+                $prevpost = '~template::include::post.previous~';
+                template::setKeyword('post.previous', 'previouspost', $url);
+                break;
             }
         }
 
-        template::setKeyword('post.next',     'nextpost',     $nextpost);
-        template::setKeyword('post.previous', 'previouspost', $prevpost);
+        template::setKeyword('post.show', 'post.next.link',     $nextpost);
+        template::setKeyword('post.show', 'post.previous.link', $prevpost);
 
         template::serveTemplate('post.show');
     }
