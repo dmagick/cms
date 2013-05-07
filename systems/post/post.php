@@ -87,14 +87,14 @@ class post
     public static function getNextAndPrevPost($postid)
     {
         $sql     = "(";
-        $sql    .= " SELECT p.postid, p.subject, p.postdate, 'previous' AS pos";
+        $sql    .= " SELECT p.postid, p.subject, TO_CHAR(p.postdate, 'YYYY-MM-DD') AS postdate, 'previous' AS pos";
         $sql    .= " FROM ".db::getPrefix()."posts p";
         $sql    .= " WHERE p.postid < :postprev";
         $sql    .= " ORDER BY postid DESC LIMIT 1";
         $sql    .= ")";
         $sql    .= " UNION ALL ";
         $sql    .= "(";
-        $sql    .= " SELECT p.postid, p.subject, p.postdate, 'next' AS pos";
+        $sql    .= " SELECT p.postid, p.subject, TO_CHAR(p.postdate, 'YYYY-MM-DD'), 'next' AS pos";
         $sql    .= " FROM ".db::getPrefix()."posts p";
         $sql    .= " WHERE p.postid > :postnext";
         $sql    .= " ORDER BY postid ASC LIMIT 1";
@@ -113,12 +113,15 @@ class post
      *
      * @return string
      */
-    public static function safeUrl($postdate, $postsubject)
+    public static function safeUrl($postdate, $postsubject, $alreadyConverted=FALSE)
     {
-        if (is_numeric($postdate) === FALSE) {
-            $postdate = strtotime($postdate);
+        if ($alreadyConverted === FALSE) {
+            if (is_numeric($postdate) === FALSE) {
+                $postdate = strtotime($postdate);
+            }
+            $postdate = date('Y-m-d', $postdate);
         }
-        $url = date('Y-m-d', $postdate).'/'.urlencode($postsubject);
+        $url = $postdate.'/'.urlencode($postsubject);
         return $url;
     }
 
@@ -229,7 +232,7 @@ class post
 
         $nextandprev = Post::getNextAndPrevPost($post['postid']);
         foreach ($nextandprev as $otherPost) {
-            $url = Post::safeUrl($otherPost['postdate'], $otherPost['subject']);
+            $url = Post::safeUrl($otherPost['postdate'], $otherPost['subject'], TRUE);
 
             switch ($otherPost['pos']) {
             case 'next':
