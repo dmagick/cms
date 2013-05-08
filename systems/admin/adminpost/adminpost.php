@@ -71,6 +71,17 @@ class adminpost
                 exit;
                 break;
 
+            case 'upload':
+                $result = self::_uploadImages();
+                if ($result === TRUE) {
+                    session::setFlashMessage('Images uploaded', 'success');
+                } else {
+                    session::setFlashMessage('Images not uploaded', 'error');
+                }
+                url::redirect('adminpost', TRUE);
+                exit;
+                break;
+
             case 'favedelete':
                 $result = self::_faveDelete($info);
                 if ($result === TRUE) {
@@ -96,6 +107,89 @@ class adminpost
             break;
 
         }
+    }
+
+    private static function _uploadImages()
+    {
+        if (isset($_POST['postid']) === FALSE) {
+            return FALSE;
+        }
+
+        // Can't do a strict check here since we're converting
+        // the post var to an int (the post var is still a string).
+        $postid = intval($_POST['postid']);
+        if ($postid != $_POST['postid']) {
+            return FALSE;
+        }
+
+        if (empty($_FILES) === TRUE || empty($_FILES['uploadimage']) === TRUE) {
+            return FALSE;
+        }
+
+        $dataDir = config::get('datadir');
+        $path    = $dataDir.'/post/'.$postid;
+
+        if (is_dir($path) === FALSE) {
+            $result = mkdir($path, 0755, TRUE);
+            if ($result === FALSE) {
+                return FALSE;
+            }
+        }
+
+        // Whether to clean up the just-created directory or not.
+        $cleanup = TRUE;
+
+        $files    = glob($path.'/*.jpg');
+        $lastName = 0;
+        if (empty($files) === FALSE) {
+            natsort($files);
+            $last     = end($files);
+            $name     = pathinfo($last, PATHINFO_FILENAME);
+            $lastName = intval($name);
+            $cleanup  = FALSE;
+        }
+
+        $lastName++;
+
+        $errors = FALSE;
+        foreach ($_FILES['uploadimage']['name'] as $imageid => $image) {
+            if (empty($image) === TRUE) {
+                continue;
+            }
+
+            if ($_FILES['uploadimage']['error'][$imageid] !== 0) {
+                continue;
+            }
+
+            if (is_uploaded_file($_FILES['uploadimage']['tmp_name'][$imageid]) === FALSE) {
+                continue;
+            }
+
+            $type = $_FILES['uploadimage']['type'][$imageid];
+
+            if ($type !== 'image/jpeg' && $type !== 'image/jpg') {
+                $errors = TRUE;
+                continue;
+            }
+
+            if (move_uploaded_file($_FILES['uploadimage']['tmp_name'][$imageid], $path.'/'.$lastName.'.jpg') === FALSE) {
+                $errors = TRUE;
+                continue;
+            }
+
+            $lastName++;
+            $cleanup = FALSE;
+        }
+
+        if ($cleanup === TRUE) {
+            rmdir($path);
+        }
+
+        if ($errors === TRUE) {
+            session::setFlashMessage('Some images failed to upload', 'error');
+        }
+
+        return TRUE;
     }
 
     private static function _deletePost($postid)
@@ -317,8 +411,13 @@ class adminpost
 
         loadSystem('post');
 
+        template::serveTemplate('post.list.upload');
         template::serveTemplate('post.list.header');
+
+        $uploadPostList = array();
         foreach ($list as $k => $details) {
+            $uploadPostList[] = '<option value="'.$details['postid'].'">'.htmlspecialchars($details['subject']).'</option>';
+
             $details['postdate'] = niceDate($details['postdate']);
             $details['content']  = htmlspecialchars(stripslashes($details['content']));
 
@@ -389,6 +488,8 @@ class adminpost
             }
             template::serveTemplate('post.list.details');
         }
+
+        template::setKeyword('post.list.upload', 'uploadpostlist', implode('<br/>', $uploadPostList));
 
         template::serveTemplate('post.list.footer');
     }

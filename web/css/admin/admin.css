@@ -15,7 +15,7 @@ td {
     margin-left: 5%;
 }
 
-#post-add-link {
+#post-add-link, #post-upload-link {
     cursor: pointer;
 }
 

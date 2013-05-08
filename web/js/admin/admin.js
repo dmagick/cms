@@ -1,4 +1,9 @@
 $(function() {
+    $('#post-upload').hide();
+    $('#post-upload-link').click(function() {
+        $('#post-upload').toggle();
+    });
+
     $('#post-add').hide();
     $('#post-add-link').click(function() {
         $('#post-add').toggle();
