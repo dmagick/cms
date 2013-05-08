@@ -35,13 +35,20 @@ $(function() {
 
     $(".post-update-button").click(function() {
         postid = this.id;
+        var delImageList = [];
+        var i = 0;
+        $('.del-'+postid+':checked').each(function(){
+            delImageList[i++] = $(this).val();
+        });
+
         var response = $.ajax({
             type: 'POST',
             url: 'adminpost/update/' + postid,
             data: {
                 subject: $('#subject-' + postid).val(),
                 content: $('#content-' + postid).val(),
-                status: $('#status-' + postid + ':checked').val()
+                status: $('#status-' + postid + ':checked').val(),
+                delimages: delImageList
             },
         }).done(function( msg ) {
             $('#t-pm-details-' + postid).html(msg);

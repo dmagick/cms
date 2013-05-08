@@ -367,6 +367,32 @@ class adminpost
             }
         }
         db::commitTransaction();
+
+        $errors = FALSE;
+        if (empty($_POST['delimages']) === FALSE) {
+            $dataDir = config::get('datadir');
+            $path    = $dataDir.'/post/'.$postid;
+            foreach ($_POST['delimages'] as $imagename) {
+                if (is_file($path.'/'.$imagename) === TRUE) {
+                    if (unlink($path.'/'.$imagename) === FALSE) {
+                        $errors = TRUE;
+                    }
+                }
+            }
+
+            // Check if the dir is now empty.
+            $files = glob($path.'/*.jpg');
+            if (empty($files) === TRUE) {
+                if (rmdir($path) === FALSE) {
+                    $errors = TRUE;
+                }
+            }
+        }
+
+        if ($errors === TRUE) {
+            return FALSE;
+        }
+
         return TRUE;
     }
 
@@ -464,6 +490,12 @@ class adminpost
                 $imageList .= '<a href="'.$imageInfo['url'].'" target="_blank">';
                 $imageList .= $imageName;
                 $imageList .= '</a>';
+                $imageList .= '&nbsp;';
+                $imageList .= '<label for="del-'.$details['postid'].'-'.htmlentities($imageName).'">Del?</label>';
+                $imageList .= '<input type="checkbox" name="deleteImage[]" class="del-'.$details['postid'].'"';
+                $imageList .= ' id="del-'.$details['postid'].'-'.htmlentities($imageName).'"';
+                $imageList .= ' value="'.htmlentities($imageName).'"';
+                $imageList .= '/>';
                 $imageList .= '<br/>';
                 $imgCount++;
             }
