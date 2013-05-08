@@ -27,3 +27,16 @@ input[type="button"] {
       width: 20px;
 }
 
+.flash-message-image {
+    float: left;
+    width: 25px;
+}
+
+img {
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    padding: 0;
+}
