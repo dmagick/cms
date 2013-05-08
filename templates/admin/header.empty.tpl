@@ -2,7 +2,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="stylesheet" href="~url::baseurl~/web/css/cms.css?v=0.0.4" type="text/css" media="screen" />
+        <link rel="stylesheet" href="~url::baseurl~/web/css/cms.css?v=0.0.5" type="text/css" media="screen" />
+        <link rel="stylesheet" href="~url::baseurl~/web/css/admin/admin.css?v=0.0.1" type="text/css" media="screen" />
+        <script language="javascript" src="~url::baseurl~/web/js/jquery-1.8.0.min.js"></script>
         <title>Splash of Photography :: </title>
     </head>
     <body>
