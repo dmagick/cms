@@ -361,7 +361,7 @@ class adminpost
                 }
 
                 $imageList .= '<img class="fave-'.$icon.'" id="'.$details['postid'].'~'.htmlentities($imageName).'" src="~url::baseurl~/web/images/admin/fave-'.$icon.'.png" border="0" />';
-                $imageList .= $imgCount.'.&nbsp;';
+                $imageList .= '&nbsp;'.$imgCount.'.&nbsp;';
                 $imageList .= '<a href="'.$imageInfo['url'].'" target="_blank">';
                 $imageList .= $imageName;
                 $imageList .= '</a>';

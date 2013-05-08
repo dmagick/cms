@@ -1,5 +1,5 @@
     <tr id="t-pm-~postid~" style="display: none;">
-        <td colspan="8"><div id="t-pm-details-~postid~"></div></td>
+        <td colspan="7"><div id="t-pm-details-~postid~"></div></td>
     </tr>
     <tr id="t-p-~postid~">
         <td>
@@ -13,9 +13,6 @@
         </td>
         <td>
             ~postdate~
-        </td>
-        <td>
-            ~postedby~
         </td>
         <td>
             <input type="radio" name="status[~postid~]" id="status-~postid~" value="live"~livechecked~>Live<br/>

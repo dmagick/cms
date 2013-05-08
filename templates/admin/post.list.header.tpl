@@ -14,9 +14,6 @@
             <th>
                 Date
             </th>
-            <th>
-                Posted By
-            </th>
             <th width="60px">
                 Status
             </th>
