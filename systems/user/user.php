@@ -59,8 +59,8 @@ class user
         // Get rid of the header.
         template::unload('header');
 
+        // Get the empty header ready.
         template::serveTemplate('header.empty');
-        template::display();
 
         template::setKeyword('user.login', 'loginurl', self::getLoginUrl());
 
