@@ -6,7 +6,7 @@ $(function() {
     $('#comment-send').click(function() {
         var response = $.ajax({
             type: 'POST',
-            url: 'post/comment',
+            url: $('#comment-form').attr('action'),
             data: {
                 comment: $('#comment-comment').val(),
                 email:   $('#comment-email').val(),

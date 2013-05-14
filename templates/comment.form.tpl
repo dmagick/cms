@@ -4,7 +4,7 @@
 
 <div id="commentform">
     Fill in the form below to add your comment.<br/>
-    <form method="post">
+    <form id="comment-form" action="~url::baseurl~/post/comment" method="post">
         <input type="hidden" name="postid" id="comment-postid" value="~postid~" />
         <div class="commentform-desc">Your name:</div>
         <div class="commentform-val"><input type="text" name="name" id="comment-name" /></div>
