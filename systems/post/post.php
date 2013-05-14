@@ -137,6 +137,12 @@ class post
 
         switch ($action)
         {
+            case 'comment':
+                self::saveComment();
+                template::clearStack();
+                exit;
+            break;
+
             case '':
                 Post::showLatestPost();
             break;
@@ -212,6 +218,7 @@ class post
             'postdate',
             'subject',
             'gallery',
+            'postid',
         );
 
         $images = post::getImages($post);
@@ -396,6 +403,69 @@ class post
 
         $entry = array_shift($results);
         return $entry;
+    }
+
+    /**
+     * Save a comment from a post into the db.
+     */
+    private static function saveComment()
+    {
+        $required = array(
+            'comment',
+            'email',
+            'name',
+            'postid',
+        );
+
+        $validComment = TRUE;
+        foreach ($required as $requiredCheck) {
+            if (isset($_POST[$requiredCheck]) === FALSE) {
+                $validComment = FALSE;
+                break;
+            }
+            if (empty($_POST[$requiredCheck]) === TRUE) {
+                $validComment = FALSE;
+                break;
+            }
+        }
+
+        if ($validComment === FALSE) {
+            messagelog::logMessage('broken at line '.__LINE__);
+            return FALSE;
+        }
+
+        // Make sure postid is an int.
+        $postid = intval($_POST['postid']);
+        if ($postid != $_POST['postid']) {
+            messagelog::logMessage('broken at line '.__LINE__);
+            return FALSE;
+        }
+
+        $commentidQuery = db::select("SELECT nextval('".db::getPrefix()."comments_commentid') AS commentid");
+        $commentidRow   = db::fetch($commentidQuery);
+        $commentid      = $commentidRow['commentid'];
+
+        $sqlInsert  = "INSERT INTO ".db::getPrefix()."comments_queue";
+        $sqlInsert .= "(commentid, content, commentemail, commentby, commentdate, postid)";
+        $sqlInsert .= " VALUES ";
+        $sqlInsert .= "(:commentid, :content, :commentemail, :commentby, NOW(), :posid)";
+
+        $insertData = array(
+            ':commentid'    => $commentid,
+            ':content'      => $_POST['comment'],
+            ':commentemail' => $_POST['email'],
+            ':commentby'    => $_POST['name'],
+            ':postid'       => $postid,
+        );
+
+        $inserted = db::execute($sqlInsert, $insertData);
+
+        if ($inserted === FALSE) {
+            $data  = 'Posted : '.print_r($_POST, TRUE)."\n";
+            $data .= 'SQL    : '.$sqlInsert."\n";
+            $data .= 'Values : '.print_r($insertData, TRUE)."\n";
+            MessageLog::logMessage('Unable to save a comment. Data is:'."\n".$data."\n");
+        }
     }
 
 }

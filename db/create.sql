@@ -1,11 +1,14 @@
 drop sequence cms_favourites_favouriteid;
 drop sequence cms_posts_postid;
+drop sequence cms_comments_commentid;
 drop table cms_posts;
 drop table cms_posts_queue;
 drop table cms_users;
 drop table cms_user_login_locks;
 drop table cms_stats;
 drop table cms_favourites;
+drop table cms_comments;
+drop table cms_comments_queue;
 
 create table cms_users (
     userid serial primary key,
@@ -60,6 +63,26 @@ create table cms_stats (
     querytotal int,
     queryunique int
 );
+
+create table cms_comments (
+    commentid int not null primary key,
+    content text,
+    commentemail text,
+    commentby text,
+    commentdate timestamp with time zone,
+    postid int not null
+);
+
+create table cms_comments_queue (
+    commentid int not null primary key,
+    content text,
+    commentemail text,
+    commentby text,
+    commentdate timestamp with time zone,
+    postid int not null
+);
+
+create sequence cms_comments_commentid;
 
 insert into cms_users(username, userpasswd, useractive) values('admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', true);
 
