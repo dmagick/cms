@@ -341,6 +341,26 @@ class Template
     }
 
     /**
+     * Fetches and returns the template with keywords replaced.
+     * This does *not* get added to the template stack.
+     */
+    public static function fetch($template=NULL)
+    {
+        if ($template === NULL) {
+            throw new Exception('Need to tell me which template to fetch');
+        }
+
+        $content = self::getTemplate($template);
+        $content = self::processKeywords($content, $template);
+        $content = self::processBuiltInKeywords($template, $content);
+
+        // Clear out keywords (if any).
+        self::unload($template);
+
+        return $content;
+    }
+
+    /**
      * Set a keyword and value for a particular template.
      * This is used by processKeywords to go through and replace.
      *
@@ -382,9 +402,13 @@ class Template
             if ($key !== FALSE) {
                 unset(self::$_templateStack[$key]);
             }
-            if (isset(self::$_keywords[$template]) === TRUE) {
-                unset(self::$_keywords[$template]);
-            }
+        }
+
+        // In case we've added keywords to a template for 'fetch' to use,
+        // clear out keywords (regardless of whether the template is in
+        // the templateStack or not).
+        if (isset(self::$_keywords[$template]) === TRUE) {
+            unset(self::$_keywords[$template]);
         }
     }
 
