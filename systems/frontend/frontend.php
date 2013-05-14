@@ -52,6 +52,9 @@ class frontend
                 'name'     => 'Latest',
                 'selected' => TRUE,
             ),
+            '/post/random' => array(
+                'name'     => 'Random',
+            ),
             '/about' => array(
                 'name' => 'About',
             ),

@@ -143,6 +143,10 @@ class post
                 exit;
             break;
 
+            case 'random':
+                Post::showRandomPost();
+            break;
+
             case '':
                 Post::showLatestPost();
             break;
@@ -174,6 +178,32 @@ class post
                     }
                 }
         }
+    }
+
+    /**
+     * Show a random post.
+     *
+     * Works out the post to show and passes it off to the showPost function.
+     *
+     * @return void
+     */
+    public static function showRandomPost()
+    {
+        $post  = array();
+
+        $sql  = "SELECT p.postid, p.subject, p.content, p.postdate, p.modifieddate, u.username AS postbyuser";
+        $sql .= " FROM ".db::getPrefix()."posts p INNER JOIN ".db::getPrefix()."users u";
+        $sql .= " ON (p.postby=u.userid)";
+        $sql .= " ORDER BY RANDOM() LIMIT 1";
+
+        $query   = db::select($sql);
+        $results = db::fetchAll($query);
+
+        if (empty($results) === FALSE) {
+            $post = array_shift($results);
+        }
+
+        Post::showPost($post);
     }
 
     /**
@@ -433,14 +463,12 @@ class post
         }
 
         if ($validComment === FALSE) {
-            messagelog::logMessage('broken at line '.__LINE__);
             return FALSE;
         }
 
         // Make sure postid is an int.
         $postid = intval($_POST['postid']);
         if ($postid != $_POST['postid']) {
-            messagelog::logMessage('broken at line '.__LINE__);
             return FALSE;
         }
 
