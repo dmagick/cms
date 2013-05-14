@@ -79,11 +79,8 @@ class db
         }
 
         try {
-            if (empty($details['password']) === FALSE) {
-                $dbconn = new PDO($connstring, $details['username'], $details['password']);
-            } else {
-                $dbconn = new PDO($connstring, $details['username']);
-            }
+            $extra  = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
+            $dbconn = new PDO($connstring, $details['username'], $details['password'], $extra);
         } catch (PDOException $e) {
             throw new Exception("Unable to connect to db: ".$e->getMessage());
         }
@@ -175,22 +172,29 @@ class db
      */
     public static function execute($sql, array $values=array())
     {
-        self::_logQuery($sql, $values);
-        $query = self::$_dbconn->prepare($sql);
-        if (empty($values) === TRUE) {
-            $result = $query->execute();
-        } else {
-            $result = $query->execute($values);
-        }
+        try {
+            $query = self::$_dbconn->prepare($sql);
+            if (empty($values) === TRUE) {
+                $result = $query->execute();
+            } else {
+                $result = $query->execute($values);
+            }
 
-        if ($result !== TRUE) {
+            if ($result !== TRUE) {
+                $msg  = 'Unable to execute sql:'.$sql."\n";
+                $msg .= 'Info:'.var_export($query->errorInfo(), TRUE);
+                messageLog::LogMessage($msg);
+                return FALSE;
+            }
+
+            $rowsAffected = $query->rowCount();
+            return $rowsAffected;
+        } catch (PDOException $e) {
             $msg  = 'Unable to execute sql:'.$sql."\n";
             $msg .= 'Info:'.var_export($query->errorInfo(), TRUE);
             messageLog::LogMessage($msg);
+            return FALSE;
         }
-
-        $rowsAffected = $query->rowCount();
-        return $rowsAffected;
     }
 
     /**
