@@ -256,6 +256,9 @@ class post
         template::setKeyword('post.show', 'post.next.link',     $nextpost);
         template::setKeyword('post.show', 'post.previous.link', $prevpost);
 
+        $commentList = self::displayComments($post['postid']);
+        template::setKeyword('post.show', 'commentlist', $commentList);
+
         template::serveTemplate('post.show');
     }
 
@@ -448,7 +451,7 @@ class post
         $sqlInsert  = "INSERT INTO ".db::getPrefix()."comments_queue";
         $sqlInsert .= "(commentid, content, commentemail, commentby, commentdate, postid)";
         $sqlInsert .= " VALUES ";
-        $sqlInsert .= "(:commentid, :content, :commentemail, :commentby, NOW(), :posid)";
+        $sqlInsert .= "(:commentid, :content, :commentemail, :commentby, NOW(), :postid)";
 
         $insertData = array(
             ':commentid'    => $commentid,
@@ -466,6 +469,41 @@ class post
             $data .= 'Values : '.print_r($insertData, TRUE)."\n";
             MessageLog::logMessage('Unable to save a comment. Data is:'."\n".$data."\n");
         }
+    }
+
+    /**
+     * Fetch and display comments for a particular post.
+     * If there are no live comments, it returns an empty string.
+     * If there are live comments, they are processed ready for inclusion in another template.
+     *
+     * @param integer $postid The post id to display comments for.
+     *
+     * @return string Returns an empty string if there are no comments, otherwise it returns them.
+     */
+    private static function displayComments($postid)
+    {
+        $sql  = "SELECT";
+        $sql .= " content, commentemail, commentby, TO_CHAR(commentdate, 'FMDDth Month, YYYY') AS commentdate";
+        $sql .= " FROM ".db::getPrefix()."comments";
+        $sql .= " WHERE postid=:postid";
+        $sql .= " ORDER BY commentid ASC";
+
+        $comments    = db::select($sql, array($postid));
+        $commentList = '';
+
+        if (empty($comments) === TRUE) {
+            return '';
+        }
+
+        foreach ($comments as $pos => $comment) {
+            template::setKeyword('comment.show', 'commentnumber', ($pos + 1));
+            template::setKeyword('comment.show', 'content', nl2br(htmlentities($comment['content'])));
+            template::setKeyword('comment.show', 'commentby', htmlentities($comment['commentby']));
+            template::setKeyword('comment.show', 'commentdate', $comment['commentdate']);
+            $commentList .= template::fetch('comment.show');
+        }
+        return $commentList;
+
     }
 
 }

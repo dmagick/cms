@@ -189,3 +189,14 @@ form {
     width: 150px;
 }
 
+.comment-list-pos {
+    float: left;
+    width: 20px;
+}
+
+.comment-list-header {
+}
+
+.comment-list {
+    padding-bottom: 20px;
+}
