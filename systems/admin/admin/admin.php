@@ -69,6 +69,9 @@ class admin
             '/adminpost' => array(
                 'name' => 'Posts',
             ),
+            '/admincomments' => array(
+                'name' => 'Comments',
+            ),
             '/adminstats' => array(
                 'name' => 'Stats',
             ),

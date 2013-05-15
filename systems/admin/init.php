@@ -7,6 +7,7 @@ require dirname(dirname(__FILE__)).'/init.php';
 // have to either globalise specific functions, or copy/paste them.
 $adminSystems = array(
     'admin',
+    'admincomments',
     'adminpost',
     'adminstats',
     'user',
