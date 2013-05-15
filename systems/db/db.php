@@ -172,6 +172,7 @@ class db
      */
     public static function execute($sql, array $values=array())
     {
+        self::_logQuery($sql, $values);
         try {
             $query = self::$_dbconn->prepare($sql);
             if (empty($values) === TRUE) {
