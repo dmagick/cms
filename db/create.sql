@@ -70,6 +70,7 @@ create table cms_comments (
     commentemail text,
     commentby text,
     commentdate timestamp with time zone,
+    modifieddate timestamp with time zone,
     postid int not null
 );
 
@@ -79,6 +80,7 @@ create table cms_comments_queue (
     commentemail text,
     commentby text,
     commentdate timestamp with time zone,
+    modifieddate timestamp with time zone,
     postid int not null
 );
 
