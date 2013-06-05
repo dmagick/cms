@@ -2,17 +2,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
         <link rel="stylesheet" href="~url::baseurl~/web/css/cms.css?v=0.0.5" type="text/css" media="screen" />
-
-        <script language="javascript" src="~url::baseurl~/web/js/jquery-1.10.0.min.js"></script>
-    
-     </head>
+        <title>Splash of Photography :: ~pagetitle~</title>
+    </head>
     <body>
-        <div id="header" class="round">
-            <div id="logo">
-                Splash Of Photography
+        <div id="container">
+            <div id="header">
+                <div id="menu">
+                    <ul>
+                        <li class="here"><a href="~url::baseurl~/">Latest</a></li>
+                        <li class=""><a href="~url::baseurl~/post/random">Random</a></li>
+                        <li class=""><a href="~url::baseurl~/about">About</a></li>
+                        <li class=""><a href="~url::baseurl~/contact">Contact</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div id="content" class="round">
+            <div id="body">
+                <div id="body-content">
 
