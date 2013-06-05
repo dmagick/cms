@@ -107,6 +107,19 @@ class db
     }
 
     /**
+     * Return whether we have a successful connection or not.
+     *
+     * @return boolean
+     */
+    public static function isConnected()
+    {
+        if (self::$_dbconn === NULL) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    /**
      * Return the table prefix.
      *
      * @return string The table prefix previously set.
