@@ -200,3 +200,10 @@ form {
 .comment-list {
     padding-bottom: 20px;
 }
+
+#galleria{ 
+    width: 900px;
+    height: 600px;
+    background: #000;
+}
+
