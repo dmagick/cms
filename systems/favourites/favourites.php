@@ -70,29 +70,27 @@ class favourites
             $postInfo[] = array(
                 'subject'  => $info['subject'],
                 'postdate' => $info['postdate'],
+                'postid'   => $info['postid'],
             );
         }
 
         $urls = post::getImageUrls($files);
 
         $code = '
-                <div id="gallery">
-                   <div id="slides">
-                       <div class="slides_container">
+                <div id="galleria">
         ';
 
         foreach ($urls as $k => $url) {
             $postDate    = $postInfo[$k]['postdate'];
             $postSubject = $postInfo[$k]['subject'];
 
+
             $code .= '<a href="~url::baseurl~/post/'.post::safeUrl($postDate, $postSubject).'">';
-            $code .= post::displayImage($url, FALSE);
+            $code .= post::displayImage($url, $postInfo[$k]);
             $code .= '</a>';
         }
 
         $code .= '
-                        </div><!-- end slides_container //-->
-                    </div><!--end slides //-->
                 </div><!-- end gallery//-->
         ';
  

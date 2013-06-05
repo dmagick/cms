@@ -1,31 +1,12 @@
-<script src="~url::baseurl~/web/js/jquery-1.8.0.min.js"></script>
-<script src="~url::baseurl~/web/js/slides.jquery.js"></script>
-        <script>
-            $(function(){
-                $("#slides").slides({
-                    play: 5000,
-                    pause: 5000,
-                    slideSpeed: 1500,
-                    generatePagination: false,
-                    next: 'slide-next',
-                    prev: 'slide-prev',
-                    animationStart: function(current){
-                        $('.caption').animate({
-                            top: 600
-                        },100);
-                    },
-                    animationComplete: function(current){
-                        $('.caption').animate({
-                            top: 560
-                        },200);
-                    },
-                    slidesLoaded: function() {
-                        $('.caption').animate({
-                            top: 560
-                        },200);
-                    }
-                });
-            });
-        </script>
+<script language="javascript" src="~url::baseurl~/web/galleria/galleria-1.2.9.min.js"></script>
+<script>
+    $(document).ready(function () {
+        Galleria.loadTheme('~url::baseurl~/web/galleria/themes/classic/galleria.classic.min.js');
+        Galleria.run('#galleria', {
+            autoplay: 7000,
+            lightbox: true
+        });
+    });
+</script>
 
 ~gallery~
