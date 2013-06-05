@@ -28,19 +28,31 @@ class favourites
         switch ($action)
         {
             default:
-                $gallery = favourites::getGallery();
+                // Check if any images have been marked as fave's.
+                $galleryImages = self::getGalleryImages();
+                if (empty($galleryImages) === TRUE) {
+                    template::serveTemplate('favourites.empty');
+                    break;
+                }
+
+                // If there are some images marked as fave's,
+                // this also checks if they are still available (and live).
+                // If they aren't, it will return empty - hence the
+                // extra check below.
+                $gallery = self::printGalleryImages($galleryImages);
+
                 if (empty($gallery) === TRUE) {
                     template::serveTemplate('favourites.empty');
                     break;
                 }
+
                 template::setKeyword('favourites', 'gallery', $gallery);
                 template::serveTemplate('favourites');
         }
     }
 
-    public static function getGallery()
+    public static function getGalleryImages()
     {
-
         $sql  = "SELECT f.imagename, p.postid, p.subject, p.postdate";
         $sql .= " FROM ".db::getPrefix()."favourites f INNER JOIN ".db::getPrefix()."posts p";
         $sql .= " ON (f.postid=p.postid)";
@@ -49,6 +61,13 @@ class favourites
         $query   = db::select($sql);
         $results = db::fetchAll($query);
 
+        return $results;
+
+    }
+
+    public static function printGalleryImages($galleryImages=array())
+    {
+
         $dataDir = config::get('datadir');
 
         // We can just use the post system to generate the div contents.
@@ -56,7 +75,7 @@ class favourites
 
         $postInfo = array();
         $files    = array();
-        foreach ($results as $row => $info) {
+        foreach ($galleryImages as $row => $info) {
             $postDir = $dataDir.'/post/'.$info['postid'];
             if (is_dir($postDir) === FALSE) {
                 continue;
@@ -76,10 +95,16 @@ class favourites
 
         $urls = post::getImageUrls($files);
 
-        $code = '
-                <div id="galleria">
-        ';
+        $code = '';
 
+        if (empty($urls) === TRUE) {
+            return $code;
+        }
+
+        $code = '
+            <div id="galleria">
+        ';
+ 
         foreach ($urls as $k => $url) {
             $postDate    = $postInfo[$k]['postdate'];
             $postSubject = $postInfo[$k]['subject'];
@@ -91,9 +116,9 @@ class favourites
         }
 
         $code .= '
-                </div><!-- end gallery//-->
+            </div><!-- end gallery//-->
         ';
- 
+
         return $code;
     }
 
