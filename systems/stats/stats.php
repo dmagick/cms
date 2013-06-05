@@ -59,7 +59,11 @@ class stats
             ':queryunique' => $querycounts['unique'],
         );
 
-        db::execute($sql, $values);
+        if (db::isConnected() === TRUE) {
+            db::execute($sql, $values);
+        } else {
+            messagelog::LogMessage('Unable to record stats, database is not connected: '.print_r($values, true));
+        }
     }
 
 }
