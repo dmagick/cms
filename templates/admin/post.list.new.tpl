@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    <input type="button" id="post-add-submit" value="Add new post">
+                    <input type="button" class="post-add-button" value="Add new post">
                 </td>
             </tr>
         </table>
